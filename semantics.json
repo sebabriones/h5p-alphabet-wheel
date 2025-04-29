@@ -1,0 +1,156 @@
+[
+    {
+      "name": "gameSettings",
+      "type": "group",
+      "label": "Configuración del juego",
+      "fields": [
+        {
+          "name": "title",
+          "type": "text",
+          "label": "Título del juego",
+          "default": "Pasapalabra"
+        },
+        {
+          "name": "timeLimit",
+          "type": "number",
+          "label": "Límite de tiempo (segundos)",
+          "default": 300,
+          "min": 30,
+          "max": 1800
+        },
+        {
+          "name": "showSolutionText",
+          "type": "text",
+          "label": "Texto para mostrar solución",
+          "default": "Mostrar solución"
+        },
+        {
+          "name": "tryAgainText",
+          "type": "text",
+          "label": "Texto para intentar de nuevo",
+          "default": "Intentar otra vez"
+        }
+      ]
+    },
+    {
+      "name": "letters",
+      "type": "list",
+      "label": "Letras y preguntas",
+      "entity": "letra",
+      "field": {
+        "name": "letter",
+        "type": "group",
+        "label": "Configuración de letra",
+        "fields": [
+          {
+            "name": "letter",
+            "type": "text",
+            "label": "Letra",
+            "default": "A",
+            "maxLength": 1
+          },
+          {
+            "name": "definition",
+            "type": "text",
+            "label": "Definición/Pregunta",
+            "widget": "textarea",
+            "description": "La pregunta o definición que aparecerá para esta letra"
+          },
+          {
+            "name": "answer",
+            "type": "text",
+            "label": "Respuesta correcta",
+            "description": "La respuesta correcta para esta letra"
+          }
+        ]
+      },
+      "default": [
+        {"letter": "A", "definition": "", "answer": ""},
+        {"letter": "B", "definition": "", "answer": ""},
+        {"letter": "C", "definition": "", "answer": ""},
+        {"letter": "D", "definition": "", "answer": ""},
+        {"letter": "E", "definition": "", "answer": ""},
+        {"letter": "F", "definition": "", "answer": ""},
+        {"letter": "G", "definition": "", "answer": ""},
+        {"letter": "H", "definition": "", "answer": ""},
+        {"letter": "I", "definition": "", "answer": ""},
+        {"letter": "J", "definition": "", "answer": ""},
+        {"letter": "K", "definition": "", "answer": ""},
+        {"letter": "L", "definition": "", "answer": ""},
+        {"letter": "M", "definition": "", "answer": ""},
+        {"letter": "N", "definition": "", "answer": ""},
+        {"letter": "O", "definition": "", "answer": ""},
+        {"letter": "P", "definition": "", "answer": ""},
+        {"letter": "Q", "definition": "", "answer": ""},
+        {"letter": "R", "definition": "", "answer": ""},
+        {"letter": "S", "definition": "", "answer": ""},
+        {"letter": "T", "definition": "", "answer": ""},
+        {"letter": "U", "definition": "", "answer": ""},
+        {"letter": "V", "definition": "", "answer": ""},
+        {"letter": "W", "definition": "", "answer": ""},
+        {"letter": "X", "definition": "", "answer": ""},
+        {"letter": "Y", "definition": "", "answer": ""},
+        {"letter": "Z", "definition": "", "answer": ""}
+      ]
+    },
+    {
+      "name": "behavioralSettings",
+      "type": "group",
+      "label": "Configuración de comportamiento",
+      "fields": [
+        {
+          "name": "caseSensitive",
+          "type": "boolean",
+          "label": "Distinguir mayúsculas/minúsculas",
+          "default": false
+        },
+        {
+          "name": "ignoreAccents",
+          "type": "boolean",
+          "label": "Ignorar acentos",
+          "default": true
+        },
+        {
+          "name": "allowPasapalabra",
+          "type": "boolean",
+          "label": "Permitir 'Pasapalabra'",
+          "default": true,
+          "description": "Permitir a los estudiantes saltar una pregunta para volver más tarde"
+        },
+        {
+          "name": "showScore",
+          "type": "boolean",
+          "label": "Mostrar puntuación",
+          "default": true
+        }
+      ]
+    },
+    {
+      "name": "designSettings",
+      "type": "group",
+      "label": "Configuración de diseño",
+      "fields": [
+        {
+          "name": "roscoColor",
+          "type": "text",
+          "label": "Color del rosco",
+          "default": "#3498db",
+          "widget": "colorSelector"
+        },
+        {
+          "name": "correctColor",
+          "type": "text",
+          "label": "Color para respuestas correctas",
+          "default": "#2ecc71",
+          "widget": "colorSelector"
+        },
+        {
+          "name": "wrongColor",
+          "type": "text",
+          "label": "Color para respuestas incorrectas",
+          "default": "#e74c3c",
+          "widget": "colorSelector"
+        }
+      ]
+    }
+  ]

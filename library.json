@@ -1,0 +1,40 @@
+{
+    "title": "Pasapalabra",
+    "description": "Juego de preguntas y respuestas estilo rosco de letras.",
+    "majorVersion": 1,
+    "minorVersion": 0,
+    "patchVersion": 0,
+    "runnable": 1,
+    "author": "Ariel Hernández Friz",
+    "license": "MIT",
+    "machineName": "H5P.PasaPalabra",
+    "coreApi": {
+      "majorVersion": 1,
+      "minorVersion": 0
+    },
+    "preloadedJs": [
+      { "path": "js/pasapalabra.js" }
+    ],
+    "preloadedCss": [
+      { "path": "css/pasapalabra.css" }
+    ],
+    "preloadedDependencies": [
+      {
+        "machineName": "FontAwesome",
+        "majorVersion": 4,
+        "minorVersion": 5
+      },
+      {
+        "machineName": "H5P.JoubelUI",
+        "majorVersion": 1,
+        "minorVersion": 3
+      }
+    ],
+    "editorDependencies": [
+      {
+        "machineName": "H5PEditor.ColorSelector",
+        "majorVersion": 1,
+        "minorVersion": 3
+      }
+    ]
+  }
