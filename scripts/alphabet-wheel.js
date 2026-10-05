@@ -2,7 +2,7 @@ var H5P = H5P || {};
 
 /**
  * Alphabet Wheel — letter-wheel quiz (line 0.1).
- * Phase B: open letter list, playable filter (definition + answer), QuestionCFRD.
+ * Phase C: results slide, overall feedback, retry gate, xAPI answered/completed.
  */
 H5P.AlphabetWheel = (function ($) {
   /**
@@ -86,9 +86,12 @@ H5P.AlphabetWheel = (function ($) {
     this.answered = false;
     this.currentLetter = null;
     this.score = 0;
+    this.finalScore = 0;
+    this.finalMaxScore = 0;
     this.timerInterval = null;
     this.gameState = {};
     this.letterElements = {};
+    this.sectionsInserted = false;
 
     H5P.QuestionCFRD.call(this, 'alphabet-wheel', { theme: true });
 
@@ -100,7 +103,11 @@ H5P.AlphabetWheel = (function ($) {
         caseSensitive: false,
         ignoreAccents: true,
         allowPass: true,
-        showScore: true
+        showScore: true,
+        enableRetry: true
+      },
+      overallFeedback: {
+        overallFeedback: []
       },
       design: {
         wheelColor: '#3498db',
@@ -120,7 +127,8 @@ H5P.AlphabetWheel = (function ($) {
         correctFeedback: 'Correct!',
         incorrectFeedback: 'Incorrect. The answer was: @answer',
         finishedLabel: 'Game finished',
-        finishedSummary: 'Correct answers: @score/@total'
+        finishedSummary: 'Correct answers: @score/@total',
+        scoreBarLabel: 'You got :num out of :total points'
       }
     }, params || {});
 
@@ -135,6 +143,7 @@ H5P.AlphabetWheel = (function ($) {
       ignoreAccents: behaviour.ignoreAccents === undefined ? true : isOn(behaviour.ignoreAccents),
       allowPass: behaviour.allowPass === undefined ? true : isOn(behaviour.allowPass),
       showScore: behaviour.showScore === undefined ? true : isOn(behaviour.showScore),
+      enableRetry: behaviour.enableRetry === undefined ? true : isOn(behaviour.enableRetry),
       wheelColor: design.wheelColor || '#3498db',
       correctColor: design.correctColor || '#2ecc71',
       wrongColor: design.wrongColor || '#e74c3c',
@@ -144,9 +153,10 @@ H5P.AlphabetWheel = (function ($) {
     this.timeLeft = this.options.timeLimit;
     this.hasContent = this.options.letters.length > 0;
 
-    this.$playArea = $('<div>', { 'class': 'h5p-aw-play-area' });
+    this.buildShell();
     this.setContent(this.$playArea);
-    this.buildDom();
+    this.buildGameDom();
+    this.showGameView();
 
     this.addButton('try-again', this.options.l10n.tryAgain, function () {
       self.resetTask();
@@ -176,7 +186,7 @@ H5P.AlphabetWheel = (function ($) {
     };
 
     this.on('resize', function () {
-      // Reserved for later layout scaling (phases C–F).
+      // Reserved for later layout scaling (phases D–F).
     });
   }
 
@@ -184,18 +194,59 @@ H5P.AlphabetWheel = (function ($) {
   AlphabetWheel.prototype.constructor = AlphabetWheel;
 
   /**
-   * Build play area (empty state or wheel UI).
+   * Build play area shell: game view + results slide.
    */
-  AlphabetWheel.prototype.buildDom = function () {
-    var self = this;
+  AlphabetWheel.prototype.buildShell = function () {
+    this.$playArea = $('<div>', { 'class': 'h5p-aw-play-area' });
+    this.$gameView = $('<div>', { 'class': 'h5p-aw-game-view' });
+    this.$resultView = $('<div>', { 'class': 'h5p-aw-result-view' }).hide();
 
+    this.$resultSummary = $('<div>', { 'class': 'h5p-aw-result-summary' });
+    this.$resultFeedback = $('<div>', {
+      'class': 'h5p-aw-result-feedback',
+      tabindex: '-1'
+    });
+    this.$resultButtons = $('<div>', { 'class': 'h5p-aw-result-buttons' });
+    this.$resultView.append(this.$resultSummary, this.$resultFeedback, this.$resultButtons);
+
+    this.$playArea.append(this.$gameView, this.$resultView);
+
+    this.insertSectionAtElement('feedback', this.$resultFeedback);
+    this.insertSectionAtElement('scorebar', this.$resultFeedback);
+    this.insertSectionAtElement('buttons', this.$resultButtons);
+    this.sectionsInserted = true;
+  };
+
+  /**
+   * Show the in-game view and hide the results slide.
+   */
+  AlphabetWheel.prototype.showGameView = function () {
+    this.$playArea.removeClass('is-showing-results');
+    this.$resultView.hide();
+    this.$gameView.show();
+  };
+
+  /**
+   * Show the results slide and hide the in-game view.
+   */
+  AlphabetWheel.prototype.showResultView = function () {
+    this.$playArea.addClass('is-showing-results');
+    this.$gameView.hide();
+    this.$resultView.show();
+  };
+
+  /**
+   * Build or rebuild the wheel UI inside the game view.
+   */
+  AlphabetWheel.prototype.buildGameDom = function () {
     this.stopTimer();
-    this.$playArea.empty();
+    this.clearLetterAnimations();
+    this.$gameView.empty();
     this.letterElements = {};
     this.currentLetter = null;
 
     if (!this.hasContent) {
-      this.$playArea.append($('<p>', {
+      this.$gameView.append($('<p>', {
         'class': 'h5p-aw-empty-message',
         text: this.options.l10n.emptyContent
       }));
@@ -233,7 +284,7 @@ H5P.AlphabetWheel = (function ($) {
     var centerOffset = radius + 20;
     var startAngle = -90;
 
-    self.$playArea.append(
+    self.$gameView.append(
       $('<div>', { 'class': 'h5p-aw-title', text: self.options.title })
     );
 
@@ -243,7 +294,7 @@ H5P.AlphabetWheel = (function ($) {
         time: '<span class="h5p-aw-time">' + self.timeLeft + '</span>'
       })
     });
-    self.$playArea.append(self.$timer);
+    self.$gameView.append(self.$timer);
 
     self.options.letters.forEach(function (letterObj, index) {
       var letter = String(letterObj.letter).toUpperCase();
@@ -313,15 +364,15 @@ H5P.AlphabetWheel = (function ($) {
     }
 
     $gameContainer.append($gameArea);
-    self.$playArea.append($gameContainer);
+    self.$gameView.append($gameContainer);
   };
 
   AlphabetWheel.prototype.setupInteractions = function () {
     var self = this;
 
-    self.$playArea.off('.aw');
+    self.$gameView.off('.aw');
 
-    self.$playArea.on('click.aw', '.h5p-aw-letter', function () {
+    self.$gameView.on('click.aw', '.h5p-aw-letter', function () {
       self.selectLetter($(this).data('letter'));
     });
 
@@ -471,6 +522,10 @@ H5P.AlphabetWheel = (function ($) {
       }));
     }
 
+    if (typeof self.triggerXAPI === 'function') {
+      self.triggerXAPI('interacted');
+    }
+
     setTimeout(function () {
       self.selectNextAvailableLetter();
     }, 1500);
@@ -490,6 +545,10 @@ H5P.AlphabetWheel = (function ($) {
 
     clearInterval(self.letterElements[letter].data('interval'));
     self.letterElements[letter].stop().css('opacity', 1);
+
+    if (typeof self.triggerXAPI === 'function') {
+      self.triggerXAPI('interacted');
+    }
 
     self.selectNextAvailableLetter();
   };
@@ -533,7 +592,6 @@ H5P.AlphabetWheel = (function ($) {
     } while (nextIndex !== startIndex);
 
     if (!found) {
-      // All answered or passed once — clear passes and retry unanswered.
       for (letter in self.gameState) {
         if (
           Object.prototype.hasOwnProperty.call(self.gameState, letter) &&
@@ -598,45 +656,81 @@ H5P.AlphabetWheel = (function ($) {
   };
 
   AlphabetWheel.prototype.endGame = function () {
-    var self = this;
-    var totalLetters = self.options.letters.length;
-    var correctAnswers = self.getScore();
+    var score;
+    var maxScore;
 
-    if (self.finished) {
+    if (this.finished) {
       return;
     }
 
-    self.finished = true;
-    self.stopTimer();
-    self.clearLetterAnimations();
+    this.finished = true;
+    this.stopTimer();
+    this.clearLetterAnimations();
 
-    if (self.$definition) {
-      self.$definition.html(
-        '<strong>' + self.options.l10n.finishedLabel + '</strong><br>' +
-        replaceTokens(self.options.l10n.finishedSummary, {
-          score: correctAnswers,
-          total: totalLetters
-        })
-      );
+    score = this.getScore();
+    maxScore = this.getMaxScore();
+    this.finalScore = score;
+    this.finalMaxScore = maxScore;
+
+    this.$resultSummary.html(
+      '<strong class="h5p-aw-result-heading">' + this.options.l10n.finishedLabel + '</strong>' +
+      '<p class="h5p-aw-result-text">' +
+      replaceTokens(this.options.l10n.finishedSummary, {
+        score: score,
+        total: maxScore
+      }) +
+      '</p>'
+    );
+
+    this.showResultView();
+    this.showOverallFeedback(score, maxScore);
+
+    this.hideButton('try-again');
+    if (this.options.enableRetry) {
+      this.showButton('try-again');
     }
 
-    if (self.$answerInput) {
-      self.$answerInput.hide();
-    }
-    if (self.$submitBtn) {
-      self.$submitBtn.hide();
-    }
-    if (self.$passBtn) {
-      self.$passBtn.hide();
-    }
+    this.triggerXAPIScored(score, maxScore, 'answered');
+    this.triggerXAPIScored(
+      score,
+      maxScore,
+      'completed',
+      true,
+      maxScore > 0 && score === maxScore
+    );
+    this.trigger('resize');
+  };
 
-    self.showButton('try-again');
+  /**
+   * Inline overall feedback on the results slide.
+   *
+   * @param {number} score
+   * @param {number} maxScore
+   */
+  AlphabetWheel.prototype.showOverallFeedback = function (score, maxScore) {
+    var ratio = maxScore > 0 ? score / maxScore : 0;
+    var resolved = H5P.QuestionCFRD.resolveOverallFeedback(
+      this.params.overallFeedback,
+      ratio,
+      this.contentId,
+      score,
+      maxScore
+    );
+    var hasMessage = resolved && resolved.html && resolved.html.trim().length > 0;
 
-    if (typeof self.triggerXAPIScored === 'function') {
-      self.triggerXAPIScored(correctAnswers, totalLetters, 'completed');
+    this.setFeedback(
+      hasMessage ? resolved.html : '',
+      score,
+      maxScore,
+      this.options.l10n.scoreBarLabel
+    );
+
+    if (!hasMessage) {
+      this.$resultFeedback
+        .children('.h5p-question-feedback')
+        .not('.h5p-question-popup')
+        .remove();
     }
-
-    self.trigger('resize');
   };
 
   /**
@@ -659,11 +753,14 @@ H5P.AlphabetWheel = (function ($) {
     this.finished = false;
     this.answered = false;
     this.score = 0;
+    this.finalScore = 0;
+    this.finalMaxScore = 0;
     this.timeLeft = this.options.timeLimit;
     this._cfrdActivityStartEnsured = false;
     this.options.letters = filterPlayableLetters(this.params.letters);
     this.hasContent = this.options.letters.length > 0;
-    this.buildDom();
+    this.buildGameDom();
+    this.showGameView();
 
     if (this.hasContent) {
       this.startTimer();

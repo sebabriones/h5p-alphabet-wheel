@@ -4,7 +4,7 @@
   "contentType": "Question",
   "majorVersion": 0,
   "minorVersion": 1,
-  "patchVersion": 1,
+  "patchVersion": 2,
   "runnable": 1,
   "embedTypes": [
     "iframe"
@@ -44,6 +44,11 @@
     }
   ],
   "editorDependencies": [
+    {
+      "machineName": "H5PEditor.RangeList",
+      "majorVersion": 1,
+      "minorVersion": 0
+    },
     {
       "machineName": "H5PEditor.ColorSelectorCFRD",
       "majorVersion": 1,

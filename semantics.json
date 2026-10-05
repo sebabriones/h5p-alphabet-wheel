@@ -199,6 +199,187 @@
         "type": "boolean",
         "label": "Show score during the game",
         "default": true
+      },
+      {
+        "name": "enableRetry",
+        "type": "boolean",
+        "label": "Enable \"Retry\" button",
+        "importance": "medium",
+        "default": true,
+        "description": "Lets the learner play the activity again after it finishes."
+      }
+    ]
+  },
+  {
+    "name": "overallFeedback",
+    "type": "group",
+    "label": "Overall feedback",
+    "importance": "low",
+    "description": "Message shown on the results slide at the end, according to the percentage of correct letters.",
+    "fields": [
+      {
+        "name": "popupBackgroundColor",
+        "type": "text",
+        "widget": "colorSelector",
+        "label": "Popup background color",
+        "default": "#ffffff",
+        "importance": "low",
+        "optional": true,
+        "spectrum": {
+          "showInput": true
+        },
+        "description": "Background color of the result popup."
+      },
+      {
+        "name": "feedbackTextColor",
+        "type": "text",
+        "widget": "colorSelector",
+        "label": "Feedback text color",
+        "default": "#333333",
+        "importance": "low",
+        "optional": true,
+        "spectrum": {
+          "showInput": true
+        },
+        "description": "Text color of the message inside the popup."
+      },
+      {
+        "name": "overallFeedback",
+        "type": "list",
+        "widgets": [
+          {
+            "name": "RangeList",
+            "label": "Default"
+          }
+        ],
+        "importance": "high",
+        "label": "Define custom feedback for any score range",
+        "description": "Click the \"Add range\" button to add as many ranges as you need. Example: 0-20% Low score, 21-90% Average score, 91-100% Great score. @score and @total are replaced by the score and the maximum score.",
+        "entity": "range",
+        "min": 1,
+        "defaultNum": 1,
+        "optional": true,
+        "field": {
+          "name": "overallFeedback",
+          "type": "group",
+          "importance": "low",
+          "fields": [
+            {
+              "name": "from",
+              "type": "number",
+              "label": "Score range",
+              "min": 0,
+              "max": 100,
+              "default": 0,
+              "unit": "%"
+            },
+            {
+              "name": "to",
+              "type": "number",
+              "min": 0,
+              "max": 100,
+              "default": 100,
+              "unit": "%"
+            },
+            {
+              "name": "feedback",
+              "type": "text",
+              "maxLength": 2048,
+              "label": "Feedback for defined score range",
+              "importance": "low",
+              "placeholder": "Fill in the feedback",
+              "optional": true
+            },
+            {
+              "name": "appearance",
+              "type": "group",
+              "label": "Appearance settings",
+              "importance": "low",
+              "expanded": false,
+              "optional": true,
+              "fields": [
+                {
+                  "name": "feedbackLeadText",
+                  "type": "text",
+                  "maxLength": 2048,
+                  "label": "Highlighted lead text",
+                  "importance": "low",
+                  "placeholder": "e.g. Correct! or Keep practicing",
+                  "optional": true
+                },
+                {
+                  "name": "feedbackLeadBold",
+                  "type": "boolean",
+                  "label": "Bold lead text",
+                  "importance": "low",
+                  "default": true
+                },
+                {
+                  "name": "feedbackLeadTextColor",
+                  "type": "text",
+                  "widget": "colorSelector",
+                  "label": "Highlighted lead text color",
+                  "default": "#1a73d9",
+                  "importance": "low",
+                  "optional": true,
+                  "spectrum": {
+                    "showInput": true
+                  }
+                },
+                {
+                  "name": "feedbackTextAlign",
+                  "type": "select",
+                  "label": "Text alignment",
+                  "description": "Only used when no feedback image is set. With an image, text alignment follows image position (left/right: left aligned, above: centered).",
+                  "importance": "low",
+                  "default": "left",
+                  "options": [
+                    {
+                      "value": "left",
+                      "label": "Left"
+                    },
+                    {
+                      "value": "center",
+                      "label": "Center"
+                    },
+                    {
+                      "value": "right",
+                      "label": "Right"
+                    }
+                  ]
+                },
+                {
+                  "name": "feedbackImage",
+                  "type": "image",
+                  "label": "Feedback image",
+                  "importance": "low",
+                  "optional": true
+                },
+                {
+                  "name": "feedbackImagePosition",
+                  "type": "select",
+                  "label": "Image position",
+                  "importance": "low",
+                  "default": "left",
+                  "options": [
+                    {
+                      "value": "above",
+                      "label": "Above text"
+                    },
+                    {
+                      "value": "left",
+                      "label": "Left of text"
+                    },
+                    {
+                      "value": "right",
+                      "label": "Right of text"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
       }
     ]
   },
@@ -331,6 +512,12 @@
         "label": "Finished summary",
         "default": "Correct answers: @score/@total",
         "description": "@score and @total are replaced by the score and the number of letters on the wheel."
+      },
+      {
+        "name": "scoreBarLabel",
+        "type": "text",
+        "label": "Score bar label",
+        "default": "You got :num out of :total points"
       }
     ]
   }

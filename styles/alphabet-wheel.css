@@ -16,6 +16,77 @@
   box-sizing: border-box;
 }
 
+.h5p-aw-game-view,
+.h5p-aw-result-view {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.h5p-aw-result-view {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75em;
+  padding: 1em;
+  text-align: center;
+}
+
+.h5p-aw-play-area.is-showing-results .h5p-aw-result-view {
+  display: flex;
+}
+
+.h5p-aw-play-area.is-showing-results .h5p-aw-game-view {
+  display: none;
+}
+
+.h5p-aw-result-summary {
+  max-width: 28rem;
+}
+
+.h5p-aw-result-heading {
+  display: block;
+  font-size: 1.25rem;
+  margin-bottom: 0.35em;
+}
+
+.h5p-aw-result-text {
+  margin: 0;
+  font-size: 1rem;
+  color: #334155;
+}
+
+.h5p-aw-result-feedback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+  width: 100%;
+  max-width: 28rem;
+}
+
+.h5p-aw-result-view .h5p-question-feedback {
+  width: 100%;
+}
+
+.h5p-aw-result-view .h5p-question-scorebar.h5p-question-visible,
+.h5p-aw-result-view .h5p-question-scorebar.full-width {
+  width: 100%;
+  max-width: 28rem;
+}
+
+.h5p-aw-result-buttons {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.h5p-aw-result-buttons .h5p-question-buttons,
+.h5p-aw-result-buttons .h5p-question-buttons.has-scorebar,
+.h5p-aw-result-buttons .h5p-question-buttons.has-scorebar.wrap {
+  justify-content: center;
+}
+
 .h5p-aw-empty-message {
   margin: 1.5rem auto;
   max-width: 28rem;
