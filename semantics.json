@@ -1128,6 +1128,14 @@
         "default": true
       },
       {
+        "name": "showSolution",
+        "type": "boolean",
+        "label": "Show the correct answer after an incorrect response",
+        "importance": "medium",
+        "default": false,
+        "description": "When enabled, the correct answer is revealed in the feedback after a wrong attempt."
+      },
+      {
         "name": "enableRetry",
         "type": "boolean",
         "label": "Enable \"Retry\" button",
@@ -1377,12 +1385,6 @@
         "default": "Try again"
       },
       {
-        "name": "showSolution",
-        "type": "text",
-        "label": "Show solution button",
-        "default": "Show solution"
-      },
-      {
         "name": "answerPlaceholder",
         "type": "text",
         "label": "Answer input placeholder",
@@ -1424,21 +1426,15 @@
         "name": "incorrectFeedback",
         "type": "text",
         "label": "Incorrect feedback",
+        "default": "Incorrect!",
+        "description": "Shown after a wrong answer when revealing the solution is disabled."
+      },
+      {
+        "name": "incorrectFeedbackWithSolution",
+        "type": "text",
+        "label": "Incorrect feedback with solution",
         "default": "Incorrect. The answer was: @answer",
-        "description": "@answer is replaced by the correct answer."
-      },
-      {
-        "name": "finishedLabel",
-        "type": "text",
-        "label": "Finished heading",
-        "default": "Game finished"
-      },
-      {
-        "name": "finishedSummary",
-        "type": "text",
-        "label": "Finished summary",
-        "default": "Correct answers: @score/@total",
-        "description": "@score and @total are replaced by the score and the number of letters on the wheel."
+        "description": "Used when showing the correct answer after an incorrect response is enabled. @answer is replaced by the correct answer."
       },
       {
         "name": "scoreBarLabel",

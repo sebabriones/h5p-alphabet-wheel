@@ -151,7 +151,8 @@ H5P.AlphabetWheel = (function ($) {
         ignoreAccents: true,
         allowPass: true,
         showScore: true,
-        enableRetry: true
+        enableRetry: true,
+        showSolution: false
       },
       overallFeedback: {
         overallFeedback: []
@@ -165,16 +166,14 @@ H5P.AlphabetWheel = (function ($) {
         submitButton: 'Answer',
         passButton: 'Pass',
         tryAgain: 'Try again',
-        showSolution: 'Show solution',
         answerPlaceholder: 'Type your answer...',
         timeLabel: 'Time: @time s',
         scoreLabel: 'Score: @score',
         emptyContent: 'Add at least one letter with a definition and a correct answer.',
         emptyAnswer: 'Please enter an answer',
         correctFeedback: 'Correct!',
-        incorrectFeedback: 'Incorrect. The answer was: @answer',
-        finishedLabel: 'Game finished',
-        finishedSummary: 'Correct answers: @score/@total',
+        incorrectFeedback: 'Incorrect!',
+        incorrectFeedbackWithSolution: 'Incorrect. The answer was: @answer',
         scoreBarLabel: 'You got :num out of :total points'
       }
     }, params || {});
@@ -190,6 +189,7 @@ H5P.AlphabetWheel = (function ($) {
       allowPass: behaviour.allowPass === undefined ? true : isOn(behaviour.allowPass),
       showScore: behaviour.showScore === undefined ? true : isOn(behaviour.showScore),
       enableRetry: behaviour.enableRetry === undefined ? true : isOn(behaviour.enableRetry),
+      showSolution: isOn(behaviour.showSolution),
       wheelColor: design.wheelColor || '#3498db',
       correctColor: design.correctColor || '#2ecc71',
       wrongColor: design.wrongColor || '#e74c3c',
@@ -448,13 +448,12 @@ H5P.AlphabetWheel = (function ($) {
     this.$gameView = $('<div>', { 'class': 'h5p-aw-game-view' });
     this.$resultView = $('<div>', { 'class': 'h5p-aw-result-view' }).hide();
 
-    this.$resultSummary = $('<div>', { 'class': 'h5p-aw-result-summary' });
     this.$resultFeedback = $('<div>', {
       'class': 'h5p-aw-result-feedback',
       tabindex: '-1'
     });
     this.$resultButtons = $('<div>', { 'class': 'h5p-aw-result-buttons' });
-    this.$resultView.append(this.$resultSummary, this.$resultFeedback, this.$resultButtons);
+    this.$resultView.append(this.$resultFeedback, this.$resultButtons);
 
     this.$playArea.append(this.$gameView, this.$resultView);
 
@@ -586,7 +585,13 @@ H5P.AlphabetWheel = (function ($) {
       'class': 'h5p-aw-answer',
       placeholder: self.options.l10n.answerPlaceholder
     });
-    $gameArea.append(self.$answerInput);
+    self.$answerField = $('<div>', { 'class': 'h5p-aw-answer-field' });
+    self.$answerIcon = $('<span>', {
+      'class': 'h5p-aw-answer-icon',
+      'aria-hidden': 'true'
+    });
+    self.$answerField.append(self.$answerInput, self.$answerIcon);
+    $gameArea.append(self.$answerField);
 
     self.$submitBtn = $('<button>', {
       type: 'button',
@@ -668,13 +673,13 @@ H5P.AlphabetWheel = (function ($) {
 
     if (selectedLetter && self.gameState[key] && !self.gameState[key].answered) {
       self.currentLetter = selectedLetter;
+      self.clearAnswerFeedback();
       self.$definition.text(selectedLetter.definition || '');
       self.$answerInput.val('').prop('disabled', false).show().focus();
       self.$submitBtn.show();
       if (self.options.allowPass) {
         self.$passBtn.show();
       }
-      self.$feedback.empty();
 
       self.letterElements[key].animate(
         { opacity: 0.3 },
@@ -693,6 +698,60 @@ H5P.AlphabetWheel = (function ($) {
           }
         );
       }, 1000));
+    }
+  };
+
+  /**
+   * Clear transient answer feedback styling and text.
+   */
+  AlphabetWheel.prototype.clearAnswerFeedback = function () {
+    if (this.$answerField) {
+      this.$answerField.removeClass('is-correct is-incorrect');
+    }
+    if (this.$answerInput) {
+      this.$answerInput.removeClass('is-correct is-incorrect');
+    }
+    if (this.$answerIcon) {
+      this.$answerIcon
+        .removeClass('fa fa-check fa-times')
+        .empty();
+    }
+    if (this.$feedback) {
+      this.$feedback
+        .removeClass('is-correct is-incorrect')
+        .empty();
+    }
+  };
+
+  /**
+   * Apply visual feedback on the answer input. Textual solution only when enabled.
+   *
+   * @param {boolean} isCorrect
+   */
+  AlphabetWheel.prototype.setAnswerFeedback = function (isCorrect) {
+    var stateClass = isCorrect ? 'is-correct' : 'is-incorrect';
+
+    this.clearAnswerFeedback();
+
+    if (this.$answerField) {
+      this.$answerField.addClass(stateClass);
+    }
+    if (this.$answerInput) {
+      this.$answerInput.addClass(stateClass);
+    }
+    if (this.$answerIcon) {
+      this.$answerIcon.addClass(
+        isCorrect ? 'fa fa-check' : 'fa fa-times'
+      );
+    }
+
+    // Text only when revealing the solution after an incorrect answer.
+    if (!isCorrect && this.options.showSolution && this.$feedback) {
+      this.$feedback
+        .addClass('is-incorrect')
+        .text(replaceTokens(this.options.l10n.incorrectFeedbackWithSolution, {
+          answer: this.currentLetter.answer
+        }));
     }
   };
 
@@ -756,17 +815,13 @@ H5P.AlphabetWheel = (function ($) {
     self.letterElements[letter].stop().css('opacity', 1)
       .css('background-color', isCorrect ? self.options.correctColor : self.options.wrongColor);
 
+    self.setAnswerFeedback(isCorrect);
+
     if (isCorrect) {
-      self.$feedback.text(self.options.l10n.correctFeedback);
       self.score += 1;
       if (self.options.showScore && self.$score) {
         self.$score.find('.h5p-aw-score-value').text(self.score);
       }
-    }
-    else {
-      self.$feedback.text(replaceTokens(self.options.l10n.incorrectFeedback, {
-        answer: self.currentLetter.answer
-      }));
     }
 
     if (typeof self.triggerXAPI === 'function') {
@@ -789,6 +844,7 @@ H5P.AlphabetWheel = (function ($) {
     letter = String(self.currentLetter.letter).toUpperCase();
     self.gameState[letter].passed = true;
     self.answered = true;
+    self.clearAnswerFeedback();
 
     clearInterval(self.letterElements[letter].data('interval'));
     self.letterElements[letter].stop().css('opacity', 1);
@@ -918,16 +974,6 @@ H5P.AlphabetWheel = (function ($) {
     maxScore = this.getMaxScore();
     this.finalScore = score;
     this.finalMaxScore = maxScore;
-
-    this.$resultSummary.html(
-      '<strong class="h5p-aw-result-heading">' + this.options.l10n.finishedLabel + '</strong>' +
-      '<p class="h5p-aw-result-text">' +
-      replaceTokens(this.options.l10n.finishedSummary, {
-        score: score,
-        total: maxScore
-      }) +
-      '</p>'
-    );
 
     this.showResultView();
     this.showOverallFeedback(score, maxScore);
