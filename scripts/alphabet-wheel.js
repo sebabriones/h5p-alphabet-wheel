@@ -2,7 +2,7 @@ var H5P = H5P || {};
 
 /**
  * Alphabet Wheel — letter-wheel quiz (line 0.1).
- * Phase D: play area 16:9 scaling.
+ * Phase E: H5P.Instructions integration.
  */
 H5P.AlphabetWheel = (function ($) {
   var PlayArea = H5P.AlphabetWheel && H5P.AlphabetWheel.PlayArea;
@@ -21,6 +21,41 @@ H5P.AlphabetWheel = (function ($) {
    */
   function isEmbeddedInstance(instance) {
     return !!(instance && typeof instance.isRoot === 'function' && !instance.isRoot());
+  }
+
+  /**
+   * @param {AlphabetWheel} instance
+   * @returns {object|null}
+   */
+  function getInstructionsOptions(instance) {
+    var instructions = instance && instance.params && instance.params.instructions;
+    var text;
+
+    if (!instructions || !isOn(instructions.enabled)) {
+      return null;
+    }
+
+    text = (instructions.text === undefined || instructions.text === null) ?
+      '' :
+      String(instructions.text).trim();
+
+    if (!text) {
+      return null;
+    }
+
+    return {
+      id: instance.contentId,
+      text: text,
+      displayMode: instructions.displayMode || 'both',
+      introButtonLabel: instructions.introButtonLabel || 'Start',
+      tabButtonLabel: instructions.tabButtonLabel || 'Instructions',
+      tabButtonLabelOpen: instructions.tabButtonLabelOpen,
+      appearance: $.extend(true, {}, instructions.appearance || {}),
+      animation: $.extend(true, {}, instructions.animation || {}),
+      startCollapsed: instructions.startCollapsed === undefined ?
+        true :
+        isOn(instructions.startCollapsed)
+    };
   }
 
   /**
@@ -106,7 +141,9 @@ H5P.AlphabetWheel = (function ($) {
     H5P.QuestionCFRD.call(this, 'alphabet-wheel', { theme: true });
 
     this.params = $.extend(true, {
-      title: 'Alphabet Wheel',
+      instructions: {
+        enabled: false
+      },
       timeLimit: 300,
       letters: [],
       behaviour: {
@@ -146,7 +183,6 @@ H5P.AlphabetWheel = (function ($) {
     design = this.params.design || {};
 
     this.options = {
-      title: this.params.title,
       timeLimit: Math.max(30, Number(this.params.timeLimit) || 300),
       letters: filterPlayableLetters(this.params.letters),
       caseSensitive: isOn(behaviour.caseSensitive),
@@ -188,6 +224,7 @@ H5P.AlphabetWheel = (function ($) {
 
       self.observePlayAreaResize();
       self.syncFullscreenLayout(true);
+      self.scheduleInstructions();
 
       if (self.hasContent && !self.finished) {
         self.startTimer();
@@ -252,6 +289,7 @@ H5P.AlphabetWheel = (function ($) {
       this._lastPlayAreaHeightPx === layout.heightPx &&
       this._lastFullscreenState === isFullscreen
     ) {
+      this.updateInstructionsScale();
       return;
     }
 
@@ -271,6 +309,63 @@ H5P.AlphabetWheel = (function ($) {
 
     if ($root && $root.length) {
       $root.css('--h5p-aw-scale', scaleKey);
+    }
+
+    this.updateInstructionsScale();
+  };
+
+  /**
+   * Mount instructions on the activity root so the intro covers the play area
+   * and the results slide. Nested content leaves this to the parent.
+   */
+  AlphabetWheel.prototype.scheduleInstructions = function () {
+    var self = this;
+
+    if (typeof this.isRoot === 'function' && !this.isRoot()) {
+      return;
+    }
+
+    [0, 200, 500].forEach(function (delay) {
+      setTimeout(function () {
+        var instructions = getInstructionsOptions(self);
+        var $target = self.$playArea;
+        var attached;
+
+        if (!instructions || !$target || !$target.length) {
+          return;
+        }
+
+        if (
+          $target.closest('.h5p-alphabet-wheel').children('.h5p-instructions-root').length ||
+          $target.children('.h5p-instructions-root').length
+        ) {
+          self.updateInstructionsScale();
+          return;
+        }
+
+        if (H5P.Instructions && typeof H5P.Instructions.attach === 'function') {
+          attached = H5P.Instructions.attach($target, instructions);
+
+          if (attached) {
+            self.trigger('resize');
+          }
+        }
+      }, delay);
+    });
+  };
+
+  /**
+   * Keep the instructions tab scale in step with the play area.
+   */
+  AlphabetWheel.prototype.updateInstructionsScale = function () {
+    var instructions = getInstructionsOptions(this);
+
+    if (!instructions || !this.$playArea || !this.$playArea.length) {
+      return;
+    }
+
+    if (H5P.Instructions && typeof H5P.Instructions.updateScale === 'function') {
+      H5P.Instructions.updateScale(this.$playArea, instructions);
     }
   };
 
@@ -430,16 +525,13 @@ H5P.AlphabetWheel = (function ($) {
     var $gameContainer = $('<div>', { 'class': 'h5p-aw-game-container' });
     var $wheel = $('<div>', { 'class': 'h5p-aw-wheel' });
     var $gameArea = $('<div>', { 'class': 'h5p-aw-game-area' });
+    var $meta = $('<div>', { 'class': 'h5p-aw-meta' });
     var $controls = $('<div>', { 'class': 'h5p-aw-controls' });
     var letterCount = self.options.letters.length;
-    // Design units in em (base font 16px → 11.25em ≈ 180px radius).
+    // Design units in em (base font 16px → 11.25em ≈ 180px radius on a 25em wheel).
     var radius = 11.25;
     var centerOffset = radius + 1.25;
     var startAngle = -90;
-
-    self.$gameView.append(
-      $('<div>', { 'class': 'h5p-aw-title', text: self.options.title })
-    );
 
     self.$timer = $('<div>', {
       'class': 'h5p-aw-timer',
@@ -447,7 +539,19 @@ H5P.AlphabetWheel = (function ($) {
         time: '<span class="h5p-aw-time">' + self.timeLeft + '</span>'
       })
     });
-    self.$gameView.append(self.$timer);
+    $meta.append(self.$timer);
+
+    if (self.options.showScore) {
+      self.$score = $('<div>', {
+        'class': 'h5p-aw-score',
+        html: replaceTokens(self.options.l10n.scoreLabel, {
+          score: '<span class="h5p-aw-score-value">0</span>'
+        })
+      });
+      $meta.append(self.$score);
+    }
+
+    $gameArea.append($meta);
 
     self.options.letters.forEach(function (letterObj, index) {
       var letter = String(letterObj.letter).toUpperCase();
@@ -505,16 +609,6 @@ H5P.AlphabetWheel = (function ($) {
 
     self.$feedback = $('<div>', { 'class': 'h5p-aw-feedback' });
     $gameArea.append(self.$feedback);
-
-    if (self.options.showScore) {
-      self.$score = $('<div>', {
-        'class': 'h5p-aw-score',
-        html: replaceTokens(self.options.l10n.scoreLabel, {
-          score: '<span class="h5p-aw-score-value">0</span>'
-        })
-      });
-      $gameArea.append(self.$score);
-    }
 
     $gameContainer.append($gameArea);
     self.$gameView.append($gameContainer);
@@ -964,7 +1058,7 @@ H5P.AlphabetWheel = (function ($) {
    */
   AlphabetWheel.prototype.getCopyrights = function () {
     return {
-      title: this.options.title || 'Alphabet Wheel',
+      title: 'Alphabet Wheel',
       author: 'Ariel Hernández Friz',
       license: 'MIT'
     };

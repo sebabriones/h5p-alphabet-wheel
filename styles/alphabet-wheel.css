@@ -13,6 +13,11 @@
   position: relative;
 }
 
+.h5p-alphabet-wheel.h5p-has-instructions-tab,
+.h5p-alphabet-wheel:has(> .h5p-instructions-root) {
+  overflow: visible;
+}
+
 body.h5p-fullscreen .h5p-alphabet-wheel,
 body.h5p-semi-fullscreen .h5p-alphabet-wheel,
 html.h5p-fullscreen .h5p-alphabet-wheel,
@@ -70,6 +75,13 @@ html.h5p-semi-fullscreen .h5p-alphabet-wheel > .h5p-question-content,
   border-radius: var(--h5p-aw-radius);
 }
 
+/* Reserve room for the instructions tab. Use em so it tracks play-area fontSize. */
+.h5p-has-instructions-tab .h5p-aw-play-area,
+.h5p-alphabet-wheel:has(> .h5p-instructions-root) .h5p-aw-play-area,
+.h5p-container:has(.h5p-instructions-tab-root) .h5p-aw-play-area {
+  padding-top: max(3.25em, var(--h5p-ins-tab-clearance, 2.75em));
+}
+
 .h5p-aw-game-view,
 .h5p-aw-result-view {
   box-sizing: border-box;
@@ -100,8 +112,9 @@ html.h5p-semi-fullscreen .h5p-alphabet-wheel > .h5p-question-content,
 .h5p-aw-game-view {
   display: flex;
   flex-direction: column;
-  justify-content: safe center;
+  justify-content: center;
   overflow: auto;
+  min-height: 0;
 }
 
 .h5p-aw-result-summary {
@@ -164,30 +177,16 @@ html.h5p-semi-fullscreen .h5p-alphabet-wheel > .h5p-question-content,
   color: #5a6575;
 }
 
-.h5p-aw-title {
-  text-align: center;
-  font-size: 1.5em;
-  margin: 0 0 0.75em;
-  font-weight: bold;
-  color: #333;
-}
-
-.h5p-aw-timer {
-  text-align: center;
-  font-size: 1.125em;
-  margin: 0 0 0.75em;
-  color: #d35400;
-  font-weight: bold;
-}
-
 .h5p-aw-game-container {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   gap: 1.25em;
   flex: 1 1 auto;
   min-height: 0;
+  width: 100%;
+  overflow: hidden;
 }
 
 .h5p-aw-wheel {
@@ -233,6 +232,32 @@ html.h5p-semi-fullscreen .h5p-alphabet-wheel > .h5p-question-content,
   display: flex;
   flex-direction: column;
   gap: 0.9em;
+  overflow: hidden;
+}
+
+.h5p-aw-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5em 1em;
+  flex: 0 0 auto;
+}
+
+.h5p-aw-timer {
+  margin: 0;
+  font-size: 1.125em;
+  color: #d35400;
+  font-weight: bold;
+  line-height: 1.3;
+}
+
+.h5p-aw-score {
+  margin: 0;
+  font-size: 1.125em;
+  font-weight: bold;
+  color: #333;
+  line-height: 1.3;
 }
 
 .h5p-aw-definition {
@@ -263,7 +288,7 @@ html.h5p-semi-fullscreen .h5p-alphabet-wheel > .h5p-question-content,
 .h5p-aw-controls {
   display: flex;
   gap: 0.6em;
-  margin-bottom: 0.35em;
+  margin: 0;
 }
 
 .h5p-aw-submit,
@@ -301,13 +326,6 @@ html.h5p-semi-fullscreen .h5p-alphabet-wheel > .h5p-question-content,
   padding: 0.3em;
 }
 
-.h5p-aw-score {
-  font-size: 1.125em;
-  font-weight: bold;
-  color: #333;
-  text-align: center;
-}
-
 .h5p-aw-letter.correct {
   background-color: #2ecc71 !important;
 }
@@ -318,4 +336,16 @@ html.h5p-semi-fullscreen .h5p-alphabet-wheel > .h5p-question-content,
 
 .h5p-aw-letter.pending {
   background-color: #f39c12 !important;
+}
+
+/* Stack panel under the wheel only when the play area is very narrow. */
+@media (max-width: 28em) {
+  .h5p-aw-game-container {
+    flex-wrap: wrap;
+    align-content: center;
+  }
+
+  .h5p-aw-game-area {
+    max-width: 100%;
+  }
 }

@@ -4,7 +4,7 @@
   "contentType": "Question",
   "majorVersion": 0,
   "minorVersion": 1,
-  "patchVersion": 4,
+  "patchVersion": 7,
   "runnable": 1,
   "embedTypes": [
     "iframe"
@@ -42,6 +42,11 @@
     },
     {
       "machineName": "H5P.QuestionCFRD",
+      "majorVersion": 1,
+      "minorVersion": 0
+    },
+    {
+      "machineName": "H5P.Instructions",
       "majorVersion": 1,
       "minorVersion": 0
     }
