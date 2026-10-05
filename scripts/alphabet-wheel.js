@@ -2,15 +2,25 @@ var H5P = H5P || {};
 
 /**
  * Alphabet Wheel — letter-wheel quiz (line 0.1).
- * Phase C: results slide, overall feedback, retry gate, xAPI answered/completed.
+ * Phase D: play area 16:9 scaling.
  */
 H5P.AlphabetWheel = (function ($) {
+  var PlayArea = H5P.AlphabetWheel && H5P.AlphabetWheel.PlayArea;
+
   /**
    * @param {*} value
    * @returns {boolean}
    */
   function isOn(value) {
     return value === true || value === 1 || value === '1' || value === 'true';
+  }
+
+  /**
+   * @param {AlphabetWheel} instance
+   * @returns {boolean}
+   */
+  function isEmbeddedInstance(instance) {
+    return !!(instance && typeof instance.isRoot === 'function' && !instance.isRoot());
   }
 
   /**
@@ -155,6 +165,7 @@ H5P.AlphabetWheel = (function ($) {
 
     this.buildShell();
     this.setContent(this.$playArea);
+    this.playAreaSize = PlayArea ? PlayArea.getDesignSize() : null;
     this.buildGameDom();
     this.showGameView();
 
@@ -175,6 +186,9 @@ H5P.AlphabetWheel = (function ($) {
         H5P.QuestionCFRD.ensureActivityStarted(self);
       }
 
+      self.observePlayAreaResize();
+      self.syncFullscreenLayout(true);
+
       if (self.hasContent && !self.finished) {
         self.startTimer();
         if (!self.currentLetter) {
@@ -186,12 +200,150 @@ H5P.AlphabetWheel = (function ($) {
     };
 
     this.on('resize', function () {
-      // Reserved for later layout scaling (phases D–F).
+      self.resize();
+    });
+
+    this.on('enterFullScreen', function () {
+      self.scheduleFullscreenLayout(false);
+    });
+
+    this.on('exitFullScreen', function () {
+      self.scheduleFullscreenLayout(true);
     });
   }
 
   AlphabetWheel.prototype = Object.create(H5P.QuestionCFRD.prototype);
   AlphabetWheel.prototype.constructor = AlphabetWheel;
+
+  /**
+   * Size the 16:9 play area (game view and results slide share the same box).
+   */
+  AlphabetWheel.prototype.resize = function () {
+    var layout;
+    var scaleKey;
+    var $root;
+    var measureElement;
+    var isFullscreen;
+
+    if (!this.$playArea || !this.$playArea.length || !PlayArea) {
+      return;
+    }
+
+    if (!this.$playArea.is(':visible')) {
+      return;
+    }
+
+    $root = this.$container && this.$container.length ?
+      this.$container :
+      this.$playArea.closest('.h5p-alphabet-wheel');
+    measureElement = ($root && $root.length) ? $root[0] : this.$playArea[0];
+    isFullscreen = PlayArea.isFullscreenContext(measureElement);
+
+    if ($root && $root.length) {
+      $root.toggleClass('h5p-aw-is-fullscreen', isFullscreen);
+    }
+
+    layout = PlayArea.getLayoutDimensions(measureElement);
+    scaleKey = layout.scale.toFixed(4);
+
+    if (
+      this._lastPlayAreaScale === scaleKey &&
+      this._lastPlayAreaWidth === layout.width &&
+      this._lastPlayAreaHeightPx === layout.heightPx &&
+      this._lastFullscreenState === isFullscreen
+    ) {
+      return;
+    }
+
+    this._lastPlayAreaScale = scaleKey;
+    this._lastPlayAreaWidth = layout.width;
+    this._lastPlayAreaHeightPx = layout.heightPx;
+    this._lastFullscreenState = isFullscreen;
+
+    this.$playArea.css({
+      fontSize: layout.fontSize + 'px',
+      '--h5p-aw-scale': scaleKey,
+      width: layout.widthPx,
+      maxWidth: '100%',
+      height: layout.heightPx,
+      margin: '0 auto'
+    });
+
+    if ($root && $root.length) {
+      $root.css('--h5p-aw-scale', scaleKey);
+    }
+  };
+
+  /**
+   * Observe play area width changes.
+   */
+  AlphabetWheel.prototype.observePlayAreaResize = function () {
+    var self = this;
+
+    if (!window.ResizeObserver || !this.$playArea || !this.$playArea.length) {
+      return;
+    }
+
+    if (this.playAreaResizeObserver) {
+      return;
+    }
+
+    if (isEmbeddedInstance(this)) {
+      return;
+    }
+
+    this.playAreaResizeObserver = new ResizeObserver(function () {
+      self.trigger('resize');
+    });
+
+    this.playAreaResizeObserver.observe(this.$playArea[0]);
+  };
+
+  /**
+   * Mark the activity root when H5P puts fullscreen classes on body/container.
+   *
+   * @param {boolean} [forceResize]
+   */
+  AlphabetWheel.prototype.syncFullscreenLayout = function (forceResize) {
+    var $root = this.$container && this.$container.length ?
+      this.$container :
+      (this.$playArea ? this.$playArea.closest('.h5p-alphabet-wheel') : null);
+    var measureRoot = (this.$playArea && this.$playArea.length) ?
+      this.$playArea[0] :
+      ($root && $root.length ? $root[0] : null);
+    var isFullscreen = !!(PlayArea && measureRoot && PlayArea.isFullscreenContext(measureRoot));
+
+    if ($root && $root.length) {
+      $root.toggleClass('h5p-aw-is-fullscreen', isFullscreen);
+    }
+
+    if (forceResize || this._lastFullscreenState !== isFullscreen) {
+      this._lastFullscreenState = isFullscreen;
+      this._lastPlayAreaScale = null;
+      this._lastPlayAreaWidth = null;
+      this._lastPlayAreaHeightPx = null;
+      this.resize();
+      return;
+    }
+
+    this.resize();
+  };
+
+  /**
+   * Re-measure after fullscreen transitions (iframe size settles late).
+   *
+   * @param {boolean} resetFirst
+   */
+  AlphabetWheel.prototype.scheduleFullscreenLayout = function (resetFirst) {
+    var self = this;
+    var delays = resetFirst ? [0, 120, 240] : [0, 80, 200];
+
+    delays.forEach(function (delay) {
+      setTimeout(function () {
+        self.syncFullscreenLayout(true);
+      }, delay);
+    });
+  };
 
   /**
    * Build play area shell: game view + results slide.
@@ -280,8 +432,9 @@ H5P.AlphabetWheel = (function ($) {
     var $gameArea = $('<div>', { 'class': 'h5p-aw-game-area' });
     var $controls = $('<div>', { 'class': 'h5p-aw-controls' });
     var letterCount = self.options.letters.length;
-    var radius = 180;
-    var centerOffset = radius + 20;
+    // Design units in em (base font 16px → 11.25em ≈ 180px radius).
+    var radius = 11.25;
+    var centerOffset = radius + 1.25;
     var startAngle = -90;
 
     self.$gameView.append(
@@ -309,8 +462,8 @@ H5P.AlphabetWheel = (function ($) {
       });
 
       $letter.css({
-        left: (centerOffset + x) + 'px',
-        top: (centerOffset + y) + 'px',
+        left: (centerOffset + x) + 'em',
+        top: (centerOffset + y) + 'em',
         backgroundColor: self.options.wheelColor,
         transform: 'translate(-50%, -50%)'
       });
