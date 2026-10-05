@@ -29,54 +29,145 @@
       "fields": [
         {
           "name": "letter",
-          "type": "text",
+          "type": "select",
           "label": "Letter",
           "default": "A",
-          "maxLength": 1
+          "options": [
+            {
+              "value": "A",
+              "label": "A"
+            },
+            {
+              "value": "B",
+              "label": "B"
+            },
+            {
+              "value": "C",
+              "label": "C"
+            },
+            {
+              "value": "D",
+              "label": "D"
+            },
+            {
+              "value": "E",
+              "label": "E"
+            },
+            {
+              "value": "F",
+              "label": "F"
+            },
+            {
+              "value": "G",
+              "label": "G"
+            },
+            {
+              "value": "H",
+              "label": "H"
+            },
+            {
+              "value": "I",
+              "label": "I"
+            },
+            {
+              "value": "J",
+              "label": "J"
+            },
+            {
+              "value": "K",
+              "label": "K"
+            },
+            {
+              "value": "L",
+              "label": "L"
+            },
+            {
+              "value": "M",
+              "label": "M"
+            },
+            {
+              "value": "N",
+              "label": "N"
+            },
+            {
+              "value": "Ñ",
+              "label": "Ñ"
+            },
+            {
+              "value": "O",
+              "label": "O"
+            },
+            {
+              "value": "P",
+              "label": "P"
+            },
+            {
+              "value": "Q",
+              "label": "Q"
+            },
+            {
+              "value": "R",
+              "label": "R"
+            },
+            {
+              "value": "S",
+              "label": "S"
+            },
+            {
+              "value": "T",
+              "label": "T"
+            },
+            {
+              "value": "U",
+              "label": "U"
+            },
+            {
+              "value": "V",
+              "label": "V"
+            },
+            {
+              "value": "W",
+              "label": "W"
+            },
+            {
+              "value": "X",
+              "label": "X"
+            },
+            {
+              "value": "Y",
+              "label": "Y"
+            },
+            {
+              "value": "Z",
+              "label": "Z"
+            }
+          ]
         },
         {
           "name": "definition",
           "type": "text",
           "label": "Definition / question",
           "widget": "textarea",
-          "description": "Shown when this letter is active."
+          "description": "Required. Shown when this letter is active. Letters missing definition or answer do not appear on the wheel."
         },
         {
           "name": "answer",
           "type": "text",
           "label": "Correct answer",
-          "description": "Expected answer for this letter."
+          "description": "Required. Expected answer for this letter."
         }
       ]
     },
     "default": [
-      { "letter": "A", "definition": "", "answer": "" },
-      { "letter": "B", "definition": "", "answer": "" },
-      { "letter": "C", "definition": "", "answer": "" },
-      { "letter": "D", "definition": "", "answer": "" },
-      { "letter": "E", "definition": "", "answer": "" },
-      { "letter": "F", "definition": "", "answer": "" },
-      { "letter": "G", "definition": "", "answer": "" },
-      { "letter": "H", "definition": "", "answer": "" },
-      { "letter": "I", "definition": "", "answer": "" },
-      { "letter": "J", "definition": "", "answer": "" },
-      { "letter": "K", "definition": "", "answer": "" },
-      { "letter": "L", "definition": "", "answer": "" },
-      { "letter": "M", "definition": "", "answer": "" },
-      { "letter": "N", "definition": "", "answer": "" },
-      { "letter": "O", "definition": "", "answer": "" },
-      { "letter": "P", "definition": "", "answer": "" },
-      { "letter": "Q", "definition": "", "answer": "" },
-      { "letter": "R", "definition": "", "answer": "" },
-      { "letter": "S", "definition": "", "answer": "" },
-      { "letter": "T", "definition": "", "answer": "" },
-      { "letter": "U", "definition": "", "answer": "" },
-      { "letter": "V", "definition": "", "answer": "" },
-      { "letter": "W", "definition": "", "answer": "" },
-      { "letter": "X", "definition": "", "answer": "" },
-      { "letter": "Y", "definition": "", "answer": "" },
-      { "letter": "Z", "definition": "", "answer": "" }
-    ]
+      {
+        "letter": "A",
+        "definition": "",
+        "answer": ""
+      }
+    ],
+    "min": 1,
+    "defaultNum": 1,
+    "description": "Add only the letters that take part in the wheel. Items without both a definition and a correct answer are ignored when playing."
   },
   {
     "name": "behaviour",
@@ -84,13 +175,6 @@
     "label": "Behavioural settings",
     "importance": "low",
     "fields": [
-      {
-        "name": "includeLetterEnye",
-        "type": "boolean",
-        "label": "Include letter Ñ",
-        "description": "When enabled, adds Ñ after N if it is not already in the letter list. Leave off for languages without Ñ (for example English).",
-        "default": false
-      },
       {
         "name": "caseSensitive",
         "type": "boolean",
@@ -209,6 +293,44 @@
         "label": "Score label",
         "default": "Score: @score",
         "description": "@score is replaced by the current score."
+      },
+      {
+        "name": "emptyContent",
+        "type": "text",
+        "label": "Empty content message",
+        "default": "Add at least one letter with a definition and a correct answer."
+      },
+      {
+        "name": "emptyAnswer",
+        "type": "text",
+        "label": "Empty answer message",
+        "default": "Please enter an answer"
+      },
+      {
+        "name": "correctFeedback",
+        "type": "text",
+        "label": "Correct feedback",
+        "default": "Correct!"
+      },
+      {
+        "name": "incorrectFeedback",
+        "type": "text",
+        "label": "Incorrect feedback",
+        "default": "Incorrect. The answer was: @answer",
+        "description": "@answer is replaced by the correct answer."
+      },
+      {
+        "name": "finishedLabel",
+        "type": "text",
+        "label": "Finished heading",
+        "default": "Game finished"
+      },
+      {
+        "name": "finishedSummary",
+        "type": "text",
+        "label": "Finished summary",
+        "default": "Correct answers: @score/@total",
+        "description": "@score and @total are replaced by the score and the number of letters on the wheel."
       }
     ]
   }

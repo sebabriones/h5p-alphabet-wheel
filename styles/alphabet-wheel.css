@@ -7,6 +7,24 @@
   color: #1d2430;
 }
 
+.h5p-alphabet-wheel .h5p-question-content {
+  margin: 0;
+}
+
+.h5p-aw-play-area {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.h5p-aw-empty-message {
+  margin: 1.5rem auto;
+  max-width: 28rem;
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1.45;
+  color: #5a6575;
+}
+
 .h5p-aw-title {
   text-align: center;
   font-size: 24px;
