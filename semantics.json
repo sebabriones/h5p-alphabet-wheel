@@ -1319,43 +1319,488 @@
     ]
   },
   {
-    "name": "design",
+    "name": "appearance",
     "type": "group",
-    "label": "Design",
+    "label": "Appearance",
     "importance": "low",
+    "description": "Colors and shapes for the wheel, definition, answer field, game buttons and results actions.",
     "fields": [
       {
-        "name": "wheelColor",
+        "name": "backgroundColor",
         "type": "text",
         "widget": "colorSelector",
-        "label": "Wheel letter color",
-        "default": "#1a73d9",
+        "label": "Background color",
+        "default": "",
         "optional": true,
         "spectrum": {
           "showInput": true
-        }
+        },
+        "importance": "low",
+        "description": "Paints the whole activity, including the results slide. Leave it empty to keep the activity without an extra color."
       },
       {
-        "name": "correctColor",
-        "type": "text",
-        "widget": "colorSelector",
-        "label": "Correct letter color",
-        "default": "#2f7d4a",
-        "optional": true,
-        "spectrum": {
-          "showInput": true
-        }
+        "name": "surfaceRadius",
+        "type": "number",
+        "label": "Play area corner radius",
+        "importance": "low",
+        "default": 0.5,
+        "min": 0,
+        "max": 4,
+        "decimals": 2,
+        "unit": "em",
+        "description": "Corner radius, in em, of the play area surfaces."
       },
       {
-        "name": "wrongColor",
-        "type": "text",
-        "widget": "colorSelector",
-        "label": "Incorrect letter color",
-        "default": "#a33b3b",
-        "optional": true,
-        "spectrum": {
-          "showInput": true
-        }
+        "name": "definition",
+        "type": "group",
+        "label": "Definition panel",
+        "importance": "low",
+        "fields": [
+          {
+            "name": "backgroundColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Background color",
+            "default": "#e7f0f8",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "textColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Text color",
+            "default": "#16324d",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "borderColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Border color",
+            "default": "#c5d6e8",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "accentColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Accent border color",
+            "default": "#24598a",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          }
+        ]
+      },
+      {
+        "name": "wheel",
+        "type": "group",
+        "label": "Wheel",
+        "importance": "low",
+        "fields": [
+          {
+            "name": "backgroundColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Disk background color",
+            "default": "#f7f9fb",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "borderColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Disk border color",
+            "default": "#24598a",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "letterColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Letter background color",
+            "default": "#1a73d9",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "letterTextColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Letter text color",
+            "default": "#ffffff",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "correctColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Correct letter color",
+            "default": "#2f7d4a",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "wrongColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Incorrect letter color",
+            "default": "#a33b3b",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          }
+        ]
+      },
+      {
+        "name": "input",
+        "type": "group",
+        "label": "Answer input",
+        "importance": "low",
+        "fields": [
+          {
+            "name": "backgroundColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Background color",
+            "default": "#ffffff",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "textColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Text color",
+            "default": "#16324d",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "borderColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Border color",
+            "default": "#24598a",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "correctBackgroundColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Correct background color",
+            "default": "#e5f6eb",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "correctBorderColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Correct border color",
+            "default": "#2f7d4a",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "wrongBackgroundColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Incorrect background color",
+            "default": "#fdecea",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "wrongBorderColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Incorrect border color",
+            "default": "#a33b3b",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          }
+        ]
+      },
+      {
+        "name": "meta",
+        "type": "group",
+        "label": "Timer and score",
+        "importance": "low",
+        "fields": [
+          {
+            "name": "timerColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Timer color",
+            "default": "#3d6b99",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "scoreColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Score color",
+            "default": "#16324d",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          }
+        ]
+      },
+      {
+        "name": "gameButtons",
+        "type": "group",
+        "label": "Game buttons",
+        "importance": "low",
+        "description": "Answer and Pass buttons shown during play.",
+        "fields": [
+          {
+            "name": "submitBackgroundColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Answer background color",
+            "default": "#1a73d9",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "submitTextColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Answer text color",
+            "default": "#ffffff",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "submitHoverBackgroundColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Answer hover background color",
+            "default": "#1356a3",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "passBackgroundColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Pass background color",
+            "default": "#ffffff",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "passTextColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Pass text color",
+            "default": "#16324d",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "passBorderColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Pass border color",
+            "default": "#24598a",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "passHoverBackgroundColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Pass hover background color",
+            "default": "#e7f0f8",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          }
+        ]
+      },
+      {
+        "name": "actionButtons",
+        "type": "group",
+        "label": "Action buttons",
+        "importance": "low",
+        "description": "Shared style for Retry and other Question buttons on the results slide. Border colors apply only when the border is enabled.",
+        "fields": [
+          {
+            "name": "backgroundColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Background color",
+            "default": "#1a73d9",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "textColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Text color",
+            "default": "#ffffff",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "hoverBackgroundColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Hover background color",
+            "default": "#1356a3",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "hoverTextColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Hover text color",
+            "default": "#ffffff",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "useBorder",
+            "type": "boolean",
+            "label": "Use border",
+            "default": false,
+            "importance": "low"
+          },
+          {
+            "name": "borderColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Border color",
+            "default": "#1a73d9",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "hoverBorderColor",
+            "type": "text",
+            "widget": "colorSelector",
+            "label": "Hover border color",
+            "default": "#1356a3",
+            "optional": true,
+            "spectrum": {
+              "showInput": true
+            },
+            "importance": "low"
+          },
+          {
+            "name": "borderRadius",
+            "type": "number",
+            "label": "Corner radius",
+            "importance": "low",
+            "default": 0.5,
+            "min": 0,
+            "max": 4,
+            "decimals": 2,
+            "unit": "em"
+          }
+        ]
       }
     ]
   },

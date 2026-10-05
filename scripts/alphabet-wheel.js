@@ -2,7 +2,7 @@ var H5P = H5P || {};
 
 /**
  * Alphabet Wheel — letter-wheel quiz (line 0.1).
- * Phase E: H5P.Instructions integration.
+ * Phase F: appearance + language packs.
  */
 H5P.AlphabetWheel = (function ($) {
   var PlayArea = H5P.AlphabetWheel && H5P.AlphabetWheel.PlayArea;
@@ -13,6 +13,70 @@ H5P.AlphabetWheel = (function ($) {
    */
   function isOn(value) {
     return value === true || value === 1 || value === '1' || value === 'true';
+  }
+
+  /**
+   * @param {number} value
+   * @param {number} min
+   * @param {number} max
+   * @param {number} fallback
+   * @returns {number}
+   */
+  function clampNumber(value, min, max, fallback) {
+    var number = Number(value);
+
+    if (isNaN(number)) {
+      number = fallback;
+    }
+
+    return Math.max(min, Math.min(max, number));
+  }
+
+  /**
+   * @param {string} value
+   * @returns {boolean}
+   */
+  function isCssColor(value) {
+    return /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(value) ||
+      /^(?:rgb|rgba|hsl|hsla)\([0-9.,%\s]+\)$/.test(value);
+  }
+
+  /**
+   * @param {H5P.jQuery} $container
+   * @param {string} property
+   * @param {string} color
+   */
+  function setColor($container, property, color) {
+    var value = String(color || '').trim();
+
+    if (isCssColor(value)) {
+      $container.css(property, value);
+    }
+  }
+
+  /**
+   * Map legacy `design` colors into `appearance.wheel` when the new group is empty.
+   *
+   * @param {object} params
+   * @returns {object}
+   */
+  function resolveAppearance(params) {
+    var appearance = $.extend(true, {}, (params && params.appearance) || {});
+    var legacy = (params && params.design) || {};
+    var wheel = appearance.wheel || {};
+
+    if (!wheel.letterColor && legacy.wheelColor) {
+      wheel.letterColor = legacy.wheelColor;
+    }
+    if (!wheel.correctColor && legacy.correctColor) {
+      wheel.correctColor = legacy.correctColor;
+    }
+    if (!wheel.wrongColor && legacy.wrongColor) {
+      wheel.wrongColor = legacy.wrongColor;
+    }
+
+    appearance.wheel = wheel;
+    return appearance;
   }
 
   /**
@@ -122,7 +186,8 @@ H5P.AlphabetWheel = (function ($) {
   function AlphabetWheel(params, contentId, contentData) {
     var self = this;
     var behaviour;
-    var design;
+    var appearance;
+    var wheel;
     var questionAttach;
 
     this.contentId = contentId;
@@ -157,10 +222,19 @@ H5P.AlphabetWheel = (function ($) {
       overallFeedback: {
         overallFeedback: []
       },
-      design: {
-        wheelColor: '#1a73d9',
-        correctColor: '#2f7d4a',
-        wrongColor: '#a33b3b'
+      appearance: {
+        backgroundColor: '',
+        surfaceRadius: 0.5,
+        definition: {},
+        wheel: {
+          letterColor: '#1a73d9',
+          correctColor: '#2f7d4a',
+          wrongColor: '#a33b3b'
+        },
+        input: {},
+        meta: {},
+        gameButtons: {},
+        actionButtons: {}
       },
       l10n: {
         submitButton: 'Answer',
@@ -178,8 +252,10 @@ H5P.AlphabetWheel = (function ($) {
       }
     }, params || {});
 
+    this.params.appearance = resolveAppearance(this.params);
     behaviour = this.params.behaviour || {};
-    design = this.params.design || {};
+    appearance = this.params.appearance || {};
+    wheel = appearance.wheel || {};
 
     this.options = {
       timeLimit: Math.max(30, Number(this.params.timeLimit) || 300),
@@ -190,9 +266,9 @@ H5P.AlphabetWheel = (function ($) {
       showScore: behaviour.showScore === undefined ? true : isOn(behaviour.showScore),
       enableRetry: behaviour.enableRetry === undefined ? true : isOn(behaviour.enableRetry),
       showSolution: isOn(behaviour.showSolution),
-      wheelColor: design.wheelColor || '#1a73d9',
-      correctColor: design.correctColor || '#2f7d4a',
-      wrongColor: design.wrongColor || '#a33b3b',
+      wheelColor: wheel.letterColor || '#1a73d9',
+      correctColor: wheel.correctColor || '#2f7d4a',
+      wrongColor: wheel.wrongColor || '#a33b3b',
       l10n: this.params.l10n || {}
     };
 
@@ -222,6 +298,7 @@ H5P.AlphabetWheel = (function ($) {
         H5P.QuestionCFRD.ensureActivityStarted(self);
       }
 
+      self.applyAppearance($container);
       self.observePlayAreaResize();
       self.syncFullscreenLayout(true);
       self.scheduleInstructions();
@@ -251,6 +328,86 @@ H5P.AlphabetWheel = (function ($) {
 
   AlphabetWheel.prototype = Object.create(H5P.QuestionCFRD.prototype);
   AlphabetWheel.prototype.constructor = AlphabetWheel;
+
+  /**
+   * Paint colors and shapes from the appearance group.
+   *
+   * @param {H5P.jQuery} $container
+   */
+  AlphabetWheel.prototype.applyAppearance = function ($container) {
+    var appearance = resolveAppearance(this.params);
+    var definition = appearance.definition || {};
+    var wheel = appearance.wheel || {};
+    var input = appearance.input || {};
+    var meta = appearance.meta || {};
+    var gameButtons = appearance.gameButtons || {};
+    var buttons = appearance.actionButtons || {};
+    var radius = clampNumber(appearance.surfaceRadius, 0, 4, 0.5);
+    var background = String(appearance.backgroundColor || '').trim();
+    var $targets = $container;
+
+    this.params.appearance = appearance;
+    this.options.wheelColor = wheel.letterColor || this.options.wheelColor || '#1a73d9';
+    this.options.correctColor = wheel.correctColor || this.options.correctColor || '#2f7d4a';
+    this.options.wrongColor = wheel.wrongColor || this.options.wrongColor || '#a33b3b';
+
+    if (this.$playArea && this.$playArea.length) {
+      $targets = $container.add(this.$playArea);
+    }
+
+    $targets.css('--h5p-aw-radius', radius + 'em');
+
+    if (isCssColor(background)) {
+      $container.css('--h5p-aw-activity-background', background);
+    }
+
+    setColor($targets, '--h5p-aw-hint-bg', definition.backgroundColor);
+    setColor($targets, '--h5p-aw-definition-color', definition.textColor);
+    setColor($targets, '--h5p-aw-hint-border', definition.borderColor);
+    setColor($targets, '--h5p-aw-primary-border', definition.accentColor);
+
+    setColor($targets, '--h5p-aw-wheel-bg', wheel.backgroundColor);
+    setColor($targets, '--h5p-aw-wheel-border', wheel.borderColor);
+    setColor($targets, '--h5p-aw-letter-bg', wheel.letterColor);
+    setColor($targets, '--h5p-aw-letter-color', wheel.letterTextColor);
+    setColor($targets, '--h5p-aw-correct-border', wheel.correctColor);
+    setColor($targets, '--h5p-aw-wrong-border', wheel.wrongColor);
+
+    setColor($targets, '--h5p-aw-input-bg', input.backgroundColor);
+    setColor($targets, '--h5p-aw-input-color', input.textColor);
+    setColor($targets, '--h5p-aw-input-border', input.borderColor);
+    setColor($targets, '--h5p-aw-correct-bg', input.correctBackgroundColor);
+    setColor($targets, '--h5p-aw-input-correct-border', input.correctBorderColor);
+    setColor($targets, '--h5p-aw-wrong-bg', input.wrongBackgroundColor);
+    setColor($targets, '--h5p-aw-input-wrong-border', input.wrongBorderColor);
+
+    setColor($targets, '--h5p-aw-meta-accent', meta.timerColor);
+    setColor($targets, '--h5p-aw-score-color', meta.scoreColor);
+
+    setColor($targets, '--h5p-aw-submit-bg', gameButtons.submitBackgroundColor);
+    setColor($targets, '--h5p-aw-submit-color', gameButtons.submitTextColor);
+    setColor($targets, '--h5p-aw-submit-hover', gameButtons.submitHoverBackgroundColor);
+    setColor($targets, '--h5p-aw-pass-bg', gameButtons.passBackgroundColor);
+    setColor($targets, '--h5p-aw-pass-color', gameButtons.passTextColor);
+    setColor($targets, '--h5p-aw-pass-border', gameButtons.passBorderColor);
+    setColor($targets, '--h5p-aw-pass-hover', gameButtons.passHoverBackgroundColor);
+
+    if (typeof this.setActionButtonAppearance === 'function') {
+      this.setActionButtonAppearance({
+        backgroundColor: buttons.backgroundColor,
+        textColor: buttons.textColor,
+        hoverBackgroundColor: buttons.hoverBackgroundColor,
+        hoverTextColor: buttons.hoverTextColor,
+        useBorder: buttons.useBorder === true,
+        borderSettings: {
+          borderColor: buttons.borderColor,
+          hoverBorderColor: buttons.hoverBorderColor
+        },
+        borderRadius: buttons.borderRadius,
+        useGradientBackground: false
+      });
+    }
+  };
 
   /**
    * Size the 16:9 play area (game view and results slide share the same box).
@@ -567,7 +724,6 @@ H5P.AlphabetWheel = (function ($) {
       $letter.css({
         left: (centerOffset + x) + 'em',
         top: (centerOffset + y) + 'em',
-        backgroundColor: self.options.wheelColor,
         transform: 'translate(-50%, -50%)'
       });
 
@@ -812,8 +968,11 @@ H5P.AlphabetWheel = (function ($) {
     self.gameState[letter].attempts += 1;
 
     clearInterval(self.letterElements[letter].data('interval'));
-    self.letterElements[letter].stop().css('opacity', 1)
-      .css('background-color', isCorrect ? self.options.correctColor : self.options.wrongColor);
+    self.letterElements[letter]
+      .stop()
+      .css('opacity', 1)
+      .removeClass('correct wrong pending')
+      .addClass(isCorrect ? 'correct' : 'wrong');
 
     self.setAnswerFeedback(isCorrect);
 

@@ -1,0 +1,592 @@
+{
+  "semantics": [
+    {
+      "label": "Instrucciones",
+      "fields": [
+        {
+          "label": "Mostrar instrucciones"
+        },
+        {
+          "label": "Texto de las instrucciones"
+        },
+        {
+          "label": "Modo de visualización",
+          "options": [
+            {
+              "label": "Solo introducción"
+            },
+            {
+              "label": "Solo pestaña"
+            },
+            {
+              "label": "Introducción y pestaña"
+            }
+          ]
+        },
+        {
+          "label": "Texto del botón de la introducción",
+          "default": "Comenzar"
+        },
+        {
+          "label": "Texto del botón de la pestaña (cerrada)",
+          "description": "Se muestra cuando la pestaña de instrucciones está contraída.",
+          "default": "Instrucciones"
+        },
+        {
+          "label": "Texto del botón de la pestaña (abierta)",
+          "description": "Se muestra cuando la pestaña de instrucciones está expandida. Si está vacío, reutiliza el texto de pestaña cerrada.",
+          "default": "Ocultar"
+        },
+        {
+          "label": "Mostrar la pestaña contraída al cargar"
+        },
+        {
+          "label": "Animación",
+          "fields": [
+            {
+              "label": "Duración de la cortina de introducción",
+              "description": "Velocidad de apertura/cierre de la cortina de introducción en milisegundos."
+            },
+            {
+              "label": "Duración de apertura/cierre de la pestaña",
+              "description": "Velocidad de apertura/cierre de la pestaña de instrucciones en milisegundos."
+            },
+            {
+              "label": "Desplazamiento extra al cerrar la pestaña",
+              "description": "Margen adicional (en px) cuando la pestaña está cerrada. 0 la deja al ras; valores más altos la ocultan más."
+            }
+          ]
+        },
+        {
+          "label": "Apariencia de las instrucciones",
+          "fields": [
+            {
+              "label": "Ventana de introducción",
+              "fields": [
+                {
+                  "label": "Usar fondo en degradado"
+                },
+                {
+                  "label": "Color de fondo de la introducción"
+                },
+                {
+                  "label": "Fondo en degradado",
+                  "fields": [
+                    {
+                      "label": "Ángulo del degradado",
+                      "description": "Dirección en grados (0 = hacia arriba, 180 = hacia abajo)."
+                    },
+                    {
+                      "label": "Color inicial del degradado"
+                    },
+                    {
+                      "label": "Color final del degradado"
+                    }
+                  ]
+                },
+                {
+                  "label": "Color del texto de la introducción"
+                },
+                {
+                  "label": "Relleno del texto",
+                  "description": "Espaciado interior alrededor del texto de introducción y del botón comenzar, en unidades rem.",
+                  "fields": [
+                    {
+                      "label": "Superior",
+                      "default": 2
+                    },
+                    {
+                      "label": "Derecho",
+                      "default": 2
+                    },
+                    {
+                      "label": "Inferior",
+                      "default": 2
+                    },
+                    {
+                      "label": "Izquierdo",
+                      "default": 2
+                    }
+                  ]
+                },
+                {
+                  "label": "Botón comenzar",
+                  "fields": [
+                    {
+                      "label": "Usar fondo en degradado"
+                    },
+                    {
+                      "label": "Color de fondo del botón"
+                    },
+                    {
+                      "label": "Fondo en degradado",
+                      "fields": [
+                        {
+                          "label": "Ángulo del degradado",
+                          "description": "Dirección en grados (0 = hacia arriba, 180 = hacia abajo)."
+                        },
+                        {
+                          "label": "Color inicial del degradado"
+                        },
+                        {
+                          "label": "Color final del degradado"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Color del texto del botón"
+                    },
+                    {
+                      "label": "Usar fondo en degradado al pasar el cursor"
+                    },
+                    {
+                      "label": "Color de fondo del botón al pasar el cursor"
+                    },
+                    {
+                      "label": "Fondo en degradado al pasar el cursor",
+                      "fields": [
+                        {
+                          "label": "Ángulo del degradado",
+                          "description": "Dirección en grados (0 = hacia arriba, 180 = hacia abajo)."
+                        },
+                        {
+                          "label": "Color inicial del degradado"
+                        },
+                        {
+                          "label": "Color final del degradado"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Color del texto del botón al pasar el cursor"
+                    },
+                    {
+                      "label": "Usar borde en el botón"
+                    },
+                    {
+                      "label": "Ajustes del borde",
+                      "fields": [
+                        {
+                          "label": "Color del borde del botón"
+                        },
+                        {
+                          "label": "Color del borde del botón al pasar el cursor"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Radio del borde del botón",
+                      "description": "Redondeo de las esquinas en unidades rem."
+                    },
+                    {
+                      "label": "Ancho del botón",
+                      "description": "Ancho máximo del botón Comenzar en unidades rem. Nunca supera el 100 % del espacio disponible.",
+                      "default": 18
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "label": "Pestaña de instrucciones",
+              "fields": [
+                {
+                  "label": "Usar fondo en degradado"
+                },
+                {
+                  "label": "Color de fondo de la pestaña"
+                },
+                {
+                  "label": "Fondo en degradado",
+                  "fields": [
+                    {
+                      "label": "Ángulo del degradado",
+                      "description": "Dirección en grados (0 = hacia arriba, 180 = hacia abajo)."
+                    },
+                    {
+                      "label": "Color inicial del degradado"
+                    },
+                    {
+                      "label": "Color final del degradado"
+                    }
+                  ]
+                },
+                {
+                  "label": "Color del texto de la pestaña"
+                },
+                {
+                  "label": "Relleno del texto",
+                  "description": "Espaciado interior del panel de contenido de la pestaña, en unidades rem.",
+                  "fields": [
+                    {
+                      "label": "Superior",
+                      "default": 1
+                    },
+                    {
+                      "label": "Derecho",
+                      "default": 1.5
+                    },
+                    {
+                      "label": "Inferior",
+                      "default": 1
+                    },
+                    {
+                      "label": "Izquierdo",
+                      "default": 1.5
+                    }
+                  ]
+                },
+                {
+                  "label": "Color del borde del contenido de la pestaña"
+                },
+                {
+                  "label": "Posición del botón de la pestaña",
+                  "options": [
+                    {
+                      "label": "Izquierda"
+                    },
+                    {
+                      "label": "Centro"
+                    },
+                    {
+                      "label": "Derecha"
+                    }
+                  ]
+                },
+                {
+                  "label": "Botón de la pestaña",
+                  "fields": [
+                    {
+                      "label": "Usar fondo en degradado"
+                    },
+                    {
+                      "label": "Color de fondo del botón"
+                    },
+                    {
+                      "label": "Fondo en degradado",
+                      "fields": [
+                        {
+                          "label": "Ángulo del degradado",
+                          "description": "Dirección en grados (0 = hacia arriba, 180 = hacia abajo)."
+                        },
+                        {
+                          "label": "Color inicial del degradado"
+                        },
+                        {
+                          "label": "Color final del degradado"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Color del texto del botón"
+                    },
+                    {
+                      "label": "Usar fondo en degradado al pasar el cursor"
+                    },
+                    {
+                      "label": "Color de fondo del botón al pasar el cursor"
+                    },
+                    {
+                      "label": "Fondo en degradado al pasar el cursor",
+                      "fields": [
+                        {
+                          "label": "Ángulo del degradado",
+                          "description": "Dirección en grados (0 = hacia arriba, 180 = hacia abajo)."
+                        },
+                        {
+                          "label": "Color inicial del degradado"
+                        },
+                        {
+                          "label": "Color final del degradado"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Color del texto del botón al pasar el cursor"
+                    },
+                    {
+                      "label": "Usar borde en el botón"
+                    },
+                    {
+                      "label": "Ajustes del borde",
+                      "fields": [
+                        {
+                          "label": "Color del borde del botón"
+                        },
+                        {
+                          "label": "Color del borde del botón al pasar el cursor"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Radio del borde del botón",
+                      "description": "Redondeo de las esquinas en unidades rem."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Límite de tiempo (segundos)"
+    },
+    {
+      "label": "Letras y preguntas",
+      "description": "Agrega solo las letras que participan en el rosco. Los ítems sin definición y respuesta se ignoran al jugar.",
+      "field": {
+        "label": "Letra",
+        "fields": [
+          {
+            "label": "Letra"
+          },
+          {
+            "label": "Definición / pregunta",
+            "description": "Obligatoria. Se muestra cuando la letra está activa. Las letras sin definición o respuesta no aparecen en el rosco."
+          },
+          {
+            "label": "Respuesta correcta",
+            "description": "Obligatoria. Respuesta esperada para esta letra."
+          }
+        ]
+      }
+    },
+    {
+      "label": "Ajustes de comportamiento",
+      "fields": [
+        {
+          "label": "Respuestas sensibles a mayúsculas"
+        },
+        {
+          "label": "Ignorar acentos"
+        },
+        {
+          "label": "Permitir pasar",
+          "description": "Permite saltar una letra y volver más tarde."
+        },
+        {
+          "label": "Mostrar puntaje durante el juego"
+        },
+        {
+          "label": "Mostrar la respuesta correcta tras un intento incorrecto",
+          "description": "Si está activo, la respuesta correcta se revela en el feedback después de un intento fallido."
+        },
+        {
+          "label": "Habilitar botón \"Reintentar\"",
+          "description": "Permite volver a jugar la actividad al terminar."
+        }
+      ]
+    },
+    {
+      "label": "Feedback global",
+      "description": "Mensaje mostrado en la diapositiva de resultados al final, según el porcentaje de letras correctas."
+    },
+    {
+      "label": "Apariencia",
+      "description": "Colores y formas del rosco, la definición, el campo de respuesta, los botones del juego y las acciones de resultados.",
+      "fields": [
+        {
+          "label": "Color de fondo",
+          "description": "Pinta toda la actividad, incluida la diapositiva de resultados. Déjalo vacío para no agregar un color extra."
+        },
+        {
+          "label": "Radio de esquinas del área de juego",
+          "description": "Radio de las esquinas, en em, de las superficies del área de juego."
+        },
+        {
+          "label": "Panel de definición",
+          "fields": [
+            {
+              "label": "Color de fondo"
+            },
+            {
+              "label": "Color de texto"
+            },
+            {
+              "label": "Color de borde"
+            },
+            {
+              "label": "Color de acento del borde"
+            }
+          ]
+        },
+        {
+          "label": "Rosco",
+          "fields": [
+            {
+              "label": "Color de fondo del disco"
+            },
+            {
+              "label": "Color de borde del disco"
+            },
+            {
+              "label": "Color de fondo de las letras"
+            },
+            {
+              "label": "Color de texto de las letras"
+            },
+            {
+              "label": "Color de letra correcta"
+            },
+            {
+              "label": "Color de letra incorrecta"
+            }
+          ]
+        },
+        {
+          "label": "Campo de respuesta",
+          "fields": [
+            {
+              "label": "Color de fondo"
+            },
+            {
+              "label": "Color de texto"
+            },
+            {
+              "label": "Color de borde"
+            },
+            {
+              "label": "Color de fondo correcto"
+            },
+            {
+              "label": "Color de borde correcto"
+            },
+            {
+              "label": "Color de fondo incorrecto"
+            },
+            {
+              "label": "Color de borde incorrecto"
+            }
+          ]
+        },
+        {
+          "label": "Temporizador y puntaje",
+          "fields": [
+            {
+              "label": "Color del temporizador"
+            },
+            {
+              "label": "Color del puntaje"
+            }
+          ]
+        },
+        {
+          "label": "Botones del juego",
+          "description": "Botones Responder y Pasar durante el juego.",
+          "fields": [
+            {
+              "label": "Color de fondo de Responder"
+            },
+            {
+              "label": "Color de texto de Responder"
+            },
+            {
+              "label": "Color de fondo al pasar el cursor (Responder)"
+            },
+            {
+              "label": "Color de fondo de Pasar"
+            },
+            {
+              "label": "Color de texto de Pasar"
+            },
+            {
+              "label": "Color de borde de Pasar"
+            },
+            {
+              "label": "Color de fondo al pasar el cursor (Pasar)"
+            }
+          ]
+        },
+        {
+          "label": "Botones de acción",
+          "description": "Estilo compartido para Reintentar y otros botones de Question en resultados. Los colores de borde solo aplican si el borde está activo.",
+          "fields": [
+            {
+              "label": "Color de fondo"
+            },
+            {
+              "label": "Color de texto"
+            },
+            {
+              "label": "Color de fondo al pasar el cursor"
+            },
+            {
+              "label": "Color de texto al pasar el cursor"
+            },
+            {
+              "label": "Usar borde"
+            },
+            {
+              "label": "Color de borde"
+            },
+            {
+              "label": "Color de borde al pasar el cursor"
+            },
+            {
+              "label": "Radio de esquinas"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Localización",
+      "fields": [
+        {
+          "label": "Botón enviar",
+          "default": "Responder"
+        },
+        {
+          "label": "Botón pasar",
+          "default": "Pasar"
+        },
+        {
+          "label": "Botón reintentar",
+          "default": "Reintentar"
+        },
+        {
+          "label": "Marcador de posición de la respuesta",
+          "default": "Escribe tu respuesta..."
+        },
+        {
+          "label": "Etiqueta del temporizador",
+          "default": "Tiempo: @time s",
+          "description": "@time se reemplaza por los segundos restantes."
+        },
+        {
+          "label": "Etiqueta del puntaje",
+          "default": "Puntaje: @score",
+          "description": "@score se reemplaza por el puntaje actual."
+        },
+        {
+          "label": "Mensaje de contenido vacío",
+          "default": "Agrega al menos una letra con definición y respuesta correcta."
+        },
+        {
+          "label": "Mensaje de respuesta vacía",
+          "default": "Ingresa una respuesta"
+        },
+        {
+          "label": "Feedback correcto",
+          "default": "¡Correcto!"
+        },
+        {
+          "label": "Feedback incorrecto",
+          "default": "¡Incorrecto!",
+          "description": "Se muestra tras un fallo cuando no se revela la solución."
+        },
+        {
+          "label": "Feedback incorrecto con solución",
+          "default": "Incorrecto. La respuesta era: @answer",
+          "description": "Se usa cuando está activo mostrar la respuesta tras un intento incorrecto. @answer se reemplaza por la respuesta correcta."
+        },
+        {
+          "label": "Etiqueta de la barra de puntaje",
+          "default": "Obtuviste :num de :total puntos"
+        }
+      ]
+    }
+  ]
+}

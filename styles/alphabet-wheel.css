@@ -10,6 +10,7 @@
   --h5p-aw-panel-border: #d5dee8;
   --h5p-aw-hint-bg: #e7f0f8;
   --h5p-aw-hint-border: #c5d6e8;
+  --h5p-aw-definition-color: #16324d;
   --h5p-aw-primary: #1a73d9;
   --h5p-aw-primary-hover: #1356a3;
   --h5p-aw-primary-border: #24598a;
@@ -18,6 +19,12 @@
   --h5p-aw-letter-bg: #1a73d9;
   --h5p-aw-letter-color: #ffffff;
   --h5p-aw-meta-accent: #3d6b99;
+  --h5p-aw-score-color: #16324d;
+  --h5p-aw-input-bg: #ffffff;
+  --h5p-aw-input-color: #16324d;
+  --h5p-aw-input-border: #24598a;
+  --h5p-aw-input-correct-border: #2f7d4a;
+  --h5p-aw-input-wrong-border: #a33b3b;
   --h5p-aw-correct-bg: #e5f6eb;
   --h5p-aw-correct-border: #2f7d4a;
   --h5p-aw-correct-color: #255c41;
@@ -25,9 +32,17 @@
   --h5p-aw-wrong-border: #a33b3b;
   --h5p-aw-wrong-color: #8a2b2b;
   --h5p-aw-pending: #7ea0c4;
+  --h5p-aw-submit-bg: #1a73d9;
+  --h5p-aw-submit-color: #ffffff;
+  --h5p-aw-submit-hover: #1356a3;
+  --h5p-aw-pass-bg: #ffffff;
+  --h5p-aw-pass-color: #16324d;
+  --h5p-aw-pass-border: #24598a;
+  --h5p-aw-pass-hover: #e7f0f8;
   color: var(--h5p-aw-text);
   position: relative;
   box-sizing: border-box;
+  background-color: var(--h5p-aw-activity-background, transparent);
 }
 
 .h5p-alphabet-wheel .h5p-question-content {
@@ -262,7 +277,7 @@ html.h5p-semi-fullscreen .h5p-alphabet-wheel > .h5p-question-content,
   margin: 0;
   font-size: 1.125em;
   font-weight: bold;
-  color: var(--h5p-aw-text);
+  color: var(--h5p-aw-score-color);
   line-height: 1.3;
 }
 
@@ -270,7 +285,7 @@ html.h5p-semi-fullscreen .h5p-alphabet-wheel > .h5p-question-content,
   margin: 0;
   padding: 0.9em;
   background-color: var(--h5p-aw-hint-bg);
-  color: var(--h5p-aw-text);
+  color: var(--h5p-aw-definition-color);
   border-radius: var(--h5p-aw-radius);
   min-height: 3.75em;
   border: 0.1em solid var(--h5p-aw-hint-border);
@@ -290,9 +305,9 @@ html.h5p-semi-fullscreen .h5p-alphabet-wheel > .h5p-question-content,
 .h5p-aw-answer {
   padding: 0.6em 2.4em 0.6em 0.9em;
   font-size: 1em;
-  color: var(--h5p-aw-text);
-  background-color: #ffffff;
-  border: 0.1em solid var(--h5p-aw-primary-border);
+  color: var(--h5p-aw-input-color);
+  background-color: var(--h5p-aw-input-bg);
+  border: 0.1em solid var(--h5p-aw-input-border);
   border-radius: var(--h5p-aw-radius);
   width: 100%;
   box-sizing: border-box;
@@ -306,13 +321,13 @@ html.h5p-semi-fullscreen .h5p-alphabet-wheel > .h5p-question-content,
 
 .h5p-aw-answer-field.is-correct .h5p-aw-answer,
 .h5p-aw-answer.is-correct {
-  border-color: var(--h5p-aw-correct-border);
+  border-color: var(--h5p-aw-input-correct-border);
   background-color: var(--h5p-aw-correct-bg);
 }
 
 .h5p-aw-answer-field.is-incorrect .h5p-aw-answer,
 .h5p-aw-answer.is-incorrect {
-  border-color: var(--h5p-aw-wrong-border);
+  border-color: var(--h5p-aw-input-wrong-border);
   background-color: var(--h5p-aw-wrong-bg);
 }
 
@@ -327,11 +342,11 @@ html.h5p-semi-fullscreen .h5p-alphabet-wheel > .h5p-question-content,
 }
 
 .h5p-aw-answer-field.is-correct .h5p-aw-answer-icon {
-  color: var(--h5p-aw-correct-border);
+  color: var(--h5p-aw-input-correct-border);
 }
 
 .h5p-aw-answer-field.is-incorrect .h5p-aw-answer-icon {
-  color: var(--h5p-aw-wrong-border);
+  color: var(--h5p-aw-input-wrong-border);
 }
 
 .h5p-aw-controls {
@@ -352,25 +367,25 @@ html.h5p-semi-fullscreen .h5p-alphabet-wheel > .h5p-question-content,
 }
 
 .h5p-aw-submit {
-  background-color: var(--h5p-aw-primary);
-  border: 0.1em solid var(--h5p-aw-primary);
-  color: #ffffff;
+  background-color: var(--h5p-aw-submit-bg);
+  border: 0.1em solid var(--h5p-aw-submit-bg);
+  color: var(--h5p-aw-submit-color);
 }
 
 .h5p-aw-submit:hover {
-  background-color: var(--h5p-aw-primary-hover);
-  border-color: var(--h5p-aw-primary-hover);
+  background-color: var(--h5p-aw-submit-hover);
+  border-color: var(--h5p-aw-submit-hover);
 }
 
 .h5p-aw-pass {
-  background-color: #ffffff;
-  border: 0.1em solid var(--h5p-aw-primary-border);
-  color: var(--h5p-aw-text);
+  background-color: var(--h5p-aw-pass-bg);
+  border: 0.1em solid var(--h5p-aw-pass-border);
+  color: var(--h5p-aw-pass-color);
 }
 
 .h5p-aw-pass:hover {
-  background-color: var(--h5p-aw-hint-bg);
-  border-color: #1a4470;
+  background-color: var(--h5p-aw-pass-hover);
+  border-color: var(--h5p-aw-pass-border);
 }
 
 .h5p-aw-feedback {

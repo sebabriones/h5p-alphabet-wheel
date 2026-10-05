@@ -1,0 +1,794 @@
+{
+  "semantics": [
+    {
+      "label": "Instructions",
+      "fields": [
+        {
+          "label": "Show instructions"
+        },
+        {
+          "label": "Instructions text"
+        },
+        {
+          "label": "Display mode",
+          "options": [
+            {
+              "label": "Intro only"
+            },
+            {
+              "label": "Tab only"
+            },
+            {
+              "label": "Intro and tab"
+            }
+          ]
+        },
+        {
+          "label": "Intro button label",
+          "default": "Start"
+        },
+        {
+          "label": "Tab button label (closed)",
+          "description": "Shown when the instructions tab is collapsed.",
+          "default": "Instructions"
+        },
+        {
+          "label": "Tab button label (open)",
+          "description": "Shown when the instructions tab is expanded. If empty, reuses the closed label.",
+          "default": "Hide"
+        },
+        {
+          "label": "Collapse tab on load"
+        },
+        {
+          "label": "Animation",
+          "fields": [
+            {
+              "label": "Intro curtain duration",
+              "description": "Opening/closing speed for the intro curtain in milliseconds."
+            },
+            {
+              "label": "Tab open/close duration",
+              "description": "Opening/closing speed for the instructions tab in milliseconds."
+            },
+            {
+              "label": "Tab closed extra offset",
+              "description": "Extra offset (in px) applied when the tab is closed. 0 keeps it flush; higher values hide it more."
+            }
+          ]
+        },
+        {
+          "label": "Instructions appearance",
+          "fields": [
+            {
+              "label": "Intro window",
+              "fields": [
+                {
+                  "label": "Use gradient background",
+                  "default": false
+                },
+                {
+                  "label": "Intro background color",
+                  "default": "#f5f5f5"
+                },
+                {
+                  "label": "Gradient background",
+                  "fields": [
+                    {
+                      "label": "Gradient angle",
+                      "description": "Direction in degrees (0 = upward, 180 = downward).",
+                      "default": 180
+                    },
+                    {
+                      "label": "Gradient start color",
+                      "default": "#f5f5f5"
+                    },
+                    {
+                      "label": "Gradient end color",
+                      "default": "#f5f5f5"
+                    }
+                  ]
+                },
+                {
+                  "label": "Intro text color",
+                  "default": "#333333"
+                },
+                {
+                  "label": "Text padding",
+                  "description": "Inner spacing around the intro text and start button, in rem.",
+                  "fields": [
+                    {
+                      "label": "Top",
+                      "default": 2
+                    },
+                    {
+                      "label": "Right",
+                      "default": 2
+                    },
+                    {
+                      "label": "Bottom",
+                      "default": 2
+                    },
+                    {
+                      "label": "Left",
+                      "default": 2
+                    }
+                  ]
+                },
+                {
+                  "label": "Start button",
+                  "fields": [
+                    {
+                      "label": "Use gradient background",
+                      "default": false
+                    },
+                    {
+                      "label": "Button background color",
+                      "default": "#1a73d9"
+                    },
+                    {
+                      "label": "Gradient background",
+                      "fields": [
+                        {
+                          "label": "Gradient angle",
+                          "description": "Direction in degrees (0 = upward, 180 = downward).",
+                          "default": 180
+                        },
+                        {
+                          "label": "Gradient start color",
+                          "default": "#1a73d9"
+                        },
+                        {
+                          "label": "Gradient end color",
+                          "default": "#1a73d9"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Button text color",
+                      "default": "#ffffff"
+                    },
+                    {
+                      "label": "Use gradient background on hover",
+                      "default": false
+                    },
+                    {
+                      "label": "Button hover background color",
+                      "default": "#1356a3"
+                    },
+                    {
+                      "label": "Hover gradient background",
+                      "fields": [
+                        {
+                          "label": "Gradient angle",
+                          "description": "Direction in degrees (0 = upward, 180 = downward).",
+                          "default": 180
+                        },
+                        {
+                          "label": "Gradient start color",
+                          "default": "#1356a3"
+                        },
+                        {
+                          "label": "Gradient end color",
+                          "default": "#1356a3"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Button hover text color",
+                      "default": "#ffffff"
+                    },
+                    {
+                      "label": "Use button border",
+                      "default": false
+                    },
+                    {
+                      "label": "Border settings",
+                      "fields": [
+                        {
+                          "label": "Button border color",
+                          "default": "#1a73d9"
+                        },
+                        {
+                          "label": "Button hover border color",
+                          "default": "#1356a3"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Button border radius",
+                      "description": "Corner roundness in rem units.",
+                      "default": 0
+                    },
+                    {
+                      "label": "Button width",
+                      "description": "Maximum width of the Start button in rem. The button never exceeds 100% of the available space.",
+                      "default": 18
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "label": "Instructions tab",
+              "fields": [
+                {
+                  "label": "Use gradient background",
+                  "default": false
+                },
+                {
+                  "label": "Tab background color",
+                  "default": "#f5f5f5"
+                },
+                {
+                  "label": "Gradient background",
+                  "fields": [
+                    {
+                      "label": "Gradient angle",
+                      "description": "Direction in degrees (0 = upward, 180 = downward).",
+                      "default": 180
+                    },
+                    {
+                      "label": "Gradient start color",
+                      "default": "#f5f5f5"
+                    },
+                    {
+                      "label": "Gradient end color",
+                      "default": "#f5f5f5"
+                    }
+                  ]
+                },
+                {
+                  "label": "Tab text color",
+                  "default": "#333333"
+                },
+                {
+                  "label": "Text padding",
+                  "description": "Inner spacing of the tab content panel, in rem.",
+                  "fields": [
+                    {
+                      "label": "Top",
+                      "default": 1
+                    },
+                    {
+                      "label": "Right",
+                      "default": 1.5
+                    },
+                    {
+                      "label": "Bottom",
+                      "default": 1
+                    },
+                    {
+                      "label": "Left",
+                      "default": 1.5
+                    }
+                  ]
+                },
+                {
+                  "label": "Tab content border color",
+                  "default": "#dbe2e8"
+                },
+                {
+                  "label": "Tab button position",
+                  "default": "left",
+                  "options": [
+                    {
+                      "label": "Left"
+                    },
+                    {
+                      "label": "Center"
+                    },
+                    {
+                      "label": "Right"
+                    }
+                  ]
+                },
+                {
+                  "label": "Tab button",
+                  "fields": [
+                    {
+                      "label": "Use gradient background",
+                      "default": false
+                    },
+                    {
+                      "label": "Button background color",
+                      "default": "#1a73d9"
+                    },
+                    {
+                      "label": "Gradient background",
+                      "fields": [
+                        {
+                          "label": "Gradient angle",
+                          "description": "Direction in degrees (0 = upward, 180 = downward).",
+                          "default": 180
+                        },
+                        {
+                          "label": "Gradient start color",
+                          "default": "#1a73d9"
+                        },
+                        {
+                          "label": "Gradient end color",
+                          "default": "#1a73d9"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Button text color",
+                      "default": "#ffffff"
+                    },
+                    {
+                      "label": "Use gradient background on hover",
+                      "default": false
+                    },
+                    {
+                      "label": "Button hover background color",
+                      "default": "#1356a3"
+                    },
+                    {
+                      "label": "Hover gradient background",
+                      "fields": [
+                        {
+                          "label": "Gradient angle",
+                          "description": "Direction in degrees (0 = upward, 180 = downward).",
+                          "default": 180
+                        },
+                        {
+                          "label": "Gradient start color",
+                          "default": "#1356a3"
+                        },
+                        {
+                          "label": "Gradient end color",
+                          "default": "#1356a3"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Button hover text color",
+                      "default": "#ffffff"
+                    },
+                    {
+                      "label": "Use button border",
+                      "default": false
+                    },
+                    {
+                      "label": "Border settings",
+                      "fields": [
+                        {
+                          "label": "Button border color",
+                          "default": "#1a73d9"
+                        },
+                        {
+                          "label": "Button hover border color",
+                          "default": "#1356a3"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Button border radius",
+                      "description": "Corner roundness in rem units.",
+                      "default": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Time limit (seconds)"
+    },
+    {
+      "label": "Letters and questions",
+      "description": "Add only the letters that take part in the wheel. Items without both a definition and a correct answer are ignored when playing.",
+      "field": {
+        "label": "Letter",
+        "fields": [
+          {
+            "label": "Letter",
+            "options": [
+              {
+                "label": "A"
+              },
+              {
+                "label": "B"
+              },
+              {
+                "label": "C"
+              },
+              {
+                "label": "D"
+              },
+              {
+                "label": "E"
+              },
+              {
+                "label": "F"
+              },
+              {
+                "label": "G"
+              },
+              {
+                "label": "H"
+              },
+              {
+                "label": "I"
+              },
+              {
+                "label": "J"
+              },
+              {
+                "label": "K"
+              },
+              {
+                "label": "L"
+              },
+              {
+                "label": "M"
+              },
+              {
+                "label": "N"
+              },
+              {
+                "label": "Ñ"
+              },
+              {
+                "label": "O"
+              },
+              {
+                "label": "P"
+              },
+              {
+                "label": "Q"
+              },
+              {
+                "label": "R"
+              },
+              {
+                "label": "S"
+              },
+              {
+                "label": "T"
+              },
+              {
+                "label": "U"
+              },
+              {
+                "label": "V"
+              },
+              {
+                "label": "W"
+              },
+              {
+                "label": "X"
+              },
+              {
+                "label": "Y"
+              },
+              {
+                "label": "Z"
+              }
+            ]
+          },
+          {
+            "label": "Definition / question",
+            "description": "Required. Shown when this letter is active. Letters missing definition or answer do not appear on the wheel."
+          },
+          {
+            "label": "Correct answer",
+            "description": "Required. Expected answer for this letter."
+          }
+        ]
+      }
+    },
+    {
+      "label": "Behavioural settings",
+      "fields": [
+        {
+          "label": "Case sensitive answers"
+        },
+        {
+          "label": "Ignore accents"
+        },
+        {
+          "label": "Allow pass",
+          "description": "Lets the learner skip a letter and come back later."
+        },
+        {
+          "label": "Show score during the game"
+        },
+        {
+          "label": "Show the correct answer after an incorrect response",
+          "description": "When enabled, the correct answer is revealed in the feedback after a wrong attempt."
+        },
+        {
+          "label": "Enable \"Retry\" button",
+          "description": "Lets the learner play the activity again after it finishes."
+        }
+      ]
+    },
+    {
+      "label": "Overall feedback",
+      "description": "Message shown on the results slide at the end, according to the percentage of correct letters.",
+      "fields": [
+        {
+          "label": "Popup background color",
+          "description": "Background color of the result popup."
+        },
+        {
+          "label": "Feedback text color",
+          "description": "Text color of the message inside the popup."
+        },
+        {
+          "label": "Define custom feedback for any score range",
+          "description": "Click the \"Add range\" button to add as many ranges as you need. Example: 0-20% Low score, 21-90% Average score, 91-100% Great score. @score and @total are replaced by the score and the maximum score.",
+          "field": {
+            "fields": [
+              {
+                "label": "Score range"
+              },
+              {},
+              {
+                "label": "Feedback for defined score range",
+                "placeholder": "Fill in the feedback"
+              },
+              {
+                "label": "Appearance settings",
+                "fields": [
+                  {
+                    "label": "Highlighted lead text",
+                    "placeholder": "e.g. Correct! or Keep practicing"
+                  },
+                  {
+                    "label": "Bold lead text"
+                  },
+                  {
+                    "label": "Highlighted lead text color"
+                  },
+                  {
+                    "label": "Text alignment",
+                    "description": "Only used when no feedback image is set. With an image, text alignment follows image position (left/right: left aligned, above: centered).",
+                    "options": [
+                      {
+                        "label": "Left"
+                      },
+                      {
+                        "label": "Center"
+                      },
+                      {
+                        "label": "Right"
+                      }
+                    ]
+                  },
+                  {
+                    "label": "Feedback image"
+                  },
+                  {
+                    "label": "Image position",
+                    "options": [
+                      {
+                        "label": "Above text"
+                      },
+                      {
+                        "label": "Left of text"
+                      },
+                      {
+                        "label": "Right of text"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "label": "Appearance",
+      "description": "Colors and shapes for the wheel, definition, answer field, game buttons and results actions.",
+      "fields": [
+        {
+          "label": "Background color",
+          "description": "Paints the whole activity, including the results slide. Leave it empty to keep the activity without an extra color."
+        },
+        {
+          "label": "Play area corner radius",
+          "description": "Corner radius, in em, of the play area surfaces."
+        },
+        {
+          "label": "Definition panel",
+          "fields": [
+            {
+              "label": "Background color"
+            },
+            {
+              "label": "Text color"
+            },
+            {
+              "label": "Border color"
+            },
+            {
+              "label": "Accent border color"
+            }
+          ]
+        },
+        {
+          "label": "Wheel",
+          "fields": [
+            {
+              "label": "Disk background color"
+            },
+            {
+              "label": "Disk border color"
+            },
+            {
+              "label": "Letter background color"
+            },
+            {
+              "label": "Letter text color"
+            },
+            {
+              "label": "Correct letter color"
+            },
+            {
+              "label": "Incorrect letter color"
+            }
+          ]
+        },
+        {
+          "label": "Answer input",
+          "fields": [
+            {
+              "label": "Background color"
+            },
+            {
+              "label": "Text color"
+            },
+            {
+              "label": "Border color"
+            },
+            {
+              "label": "Correct background color"
+            },
+            {
+              "label": "Correct border color"
+            },
+            {
+              "label": "Incorrect background color"
+            },
+            {
+              "label": "Incorrect border color"
+            }
+          ]
+        },
+        {
+          "label": "Timer and score",
+          "fields": [
+            {
+              "label": "Timer color"
+            },
+            {
+              "label": "Score color"
+            }
+          ]
+        },
+        {
+          "label": "Game buttons",
+          "description": "Answer and Pass buttons shown during play.",
+          "fields": [
+            {
+              "label": "Answer background color"
+            },
+            {
+              "label": "Answer text color"
+            },
+            {
+              "label": "Answer hover background color"
+            },
+            {
+              "label": "Pass background color"
+            },
+            {
+              "label": "Pass text color"
+            },
+            {
+              "label": "Pass border color"
+            },
+            {
+              "label": "Pass hover background color"
+            }
+          ]
+        },
+        {
+          "label": "Action buttons",
+          "description": "Shared style for Retry and other Question buttons on the results slide. Border colors apply only when the border is enabled.",
+          "fields": [
+            {
+              "label": "Background color"
+            },
+            {
+              "label": "Text color"
+            },
+            {
+              "label": "Hover background color"
+            },
+            {
+              "label": "Hover text color"
+            },
+            {
+              "label": "Use border"
+            },
+            {
+              "label": "Border color"
+            },
+            {
+              "label": "Hover border color"
+            },
+            {
+              "label": "Corner radius"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Localize",
+      "fields": [
+        {
+          "label": "Submit button",
+          "default": "Answer"
+        },
+        {
+          "label": "Pass button",
+          "default": "Pass"
+        },
+        {
+          "label": "Retry button",
+          "default": "Try again"
+        },
+        {
+          "label": "Answer input placeholder",
+          "default": "Type your answer..."
+        },
+        {
+          "label": "Timer label",
+          "description": "@time is replaced by the seconds left.",
+          "default": "Time: @time s"
+        },
+        {
+          "label": "Score label",
+          "description": "@score is replaced by the current score.",
+          "default": "Score: @score"
+        },
+        {
+          "label": "Empty content message",
+          "default": "Add at least one letter with a definition and a correct answer."
+        },
+        {
+          "label": "Empty answer message",
+          "default": "Please enter an answer"
+        },
+        {
+          "label": "Correct feedback",
+          "default": "Correct!"
+        },
+        {
+          "label": "Incorrect feedback",
+          "description": "Shown after a wrong answer when revealing the solution is disabled.",
+          "default": "Incorrect!"
+        },
+        {
+          "label": "Incorrect feedback with solution",
+          "description": "Used when showing the correct answer after an incorrect response is enabled. @answer is replaced by the correct answer.",
+          "default": "Incorrect. The answer was: @answer"
+        },
+        {
+          "label": "Score bar label",
+          "default": "You got :num out of :total points"
+        }
+      ]
+    }
+  ]
+}
