@@ -1329,7 +1329,7 @@
         "type": "text",
         "widget": "colorSelector",
         "label": "Wheel letter color",
-        "default": "#3498db",
+        "default": "#1a73d9",
         "optional": true,
         "spectrum": {
           "showInput": true
@@ -1340,7 +1340,7 @@
         "type": "text",
         "widget": "colorSelector",
         "label": "Correct letter color",
-        "default": "#2ecc71",
+        "default": "#2f7d4a",
         "optional": true,
         "spectrum": {
           "showInput": true
@@ -1351,7 +1351,7 @@
         "type": "text",
         "widget": "colorSelector",
         "label": "Incorrect letter color",
-        "default": "#e74c3c",
+        "default": "#a33b3b",
         "optional": true,
         "spectrum": {
           "showInput": true

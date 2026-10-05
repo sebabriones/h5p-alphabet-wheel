@@ -158,9 +158,9 @@ H5P.AlphabetWheel = (function ($) {
         overallFeedback: []
       },
       design: {
-        wheelColor: '#3498db',
-        correctColor: '#2ecc71',
-        wrongColor: '#e74c3c'
+        wheelColor: '#1a73d9',
+        correctColor: '#2f7d4a',
+        wrongColor: '#a33b3b'
       },
       l10n: {
         submitButton: 'Answer',
@@ -190,9 +190,9 @@ H5P.AlphabetWheel = (function ($) {
       showScore: behaviour.showScore === undefined ? true : isOn(behaviour.showScore),
       enableRetry: behaviour.enableRetry === undefined ? true : isOn(behaviour.enableRetry),
       showSolution: isOn(behaviour.showSolution),
-      wheelColor: design.wheelColor || '#3498db',
-      correctColor: design.correctColor || '#2ecc71',
-      wrongColor: design.wrongColor || '#e74c3c',
+      wheelColor: design.wheelColor || '#1a73d9',
+      correctColor: design.correctColor || '#2f7d4a',
+      wrongColor: design.wrongColor || '#a33b3b',
       l10n: this.params.l10n || {}
     };
 
