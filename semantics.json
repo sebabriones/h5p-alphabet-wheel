@@ -1,156 +1,215 @@
 [
-    {
-      "name": "gameSettings",
+  {
+    "name": "title",
+    "type": "text",
+    "label": "Game title",
+    "importance": "high",
+    "default": "Alphabet Wheel"
+  },
+  {
+    "name": "timeLimit",
+    "type": "number",
+    "label": "Time limit (seconds)",
+    "importance": "medium",
+    "default": 300,
+    "min": 30,
+    "max": 1800,
+    "unit": "s"
+  },
+  {
+    "name": "letters",
+    "type": "list",
+    "label": "Letters and questions",
+    "importance": "high",
+    "entity": "letter",
+    "field": {
+      "name": "letterItem",
       "type": "group",
-      "label": "Configuración del juego",
+      "label": "Letter",
       "fields": [
         {
-          "name": "title",
+          "name": "letter",
           "type": "text",
-          "label": "Título del juego",
-          "default": "Pasapalabra"
+          "label": "Letter",
+          "default": "A",
+          "maxLength": 1
         },
         {
-          "name": "timeLimit",
-          "type": "number",
-          "label": "Límite de tiempo (segundos)",
-          "default": 300,
-          "min": 30,
-          "max": 1800
+          "name": "definition",
+          "type": "text",
+          "label": "Definition / question",
+          "widget": "textarea",
+          "description": "Shown when this letter is active."
         },
         {
-          "name": "showSolutionText",
+          "name": "answer",
           "type": "text",
-          "label": "Texto para mostrar solución",
-          "default": "Mostrar solución"
-        },
-        {
-          "name": "tryAgainText",
-          "type": "text",
-          "label": "Texto para intentar de nuevo",
-          "default": "Intentar otra vez"
+          "label": "Correct answer",
+          "description": "Expected answer for this letter."
         }
       ]
     },
-    {
-      "name": "letters",
-      "type": "list",
-      "label": "Letras y preguntas",
-      "entity": "letra",
-      "field": {
-        "name": "letter",
-        "type": "group",
-        "label": "Configuración de letra",
-        "fields": [
-          {
-            "name": "letter",
-            "type": "text",
-            "label": "Letra",
-            "default": "A",
-            "maxLength": 1
-          },
-          {
-            "name": "definition",
-            "type": "text",
-            "label": "Definición/Pregunta",
-            "widget": "textarea",
-            "description": "La pregunta o definición que aparecerá para esta letra"
-          },
-          {
-            "name": "answer",
-            "type": "text",
-            "label": "Respuesta correcta",
-            "description": "La respuesta correcta para esta letra"
-          }
-        ]
+    "default": [
+      { "letter": "A", "definition": "", "answer": "" },
+      { "letter": "B", "definition": "", "answer": "" },
+      { "letter": "C", "definition": "", "answer": "" },
+      { "letter": "D", "definition": "", "answer": "" },
+      { "letter": "E", "definition": "", "answer": "" },
+      { "letter": "F", "definition": "", "answer": "" },
+      { "letter": "G", "definition": "", "answer": "" },
+      { "letter": "H", "definition": "", "answer": "" },
+      { "letter": "I", "definition": "", "answer": "" },
+      { "letter": "J", "definition": "", "answer": "" },
+      { "letter": "K", "definition": "", "answer": "" },
+      { "letter": "L", "definition": "", "answer": "" },
+      { "letter": "M", "definition": "", "answer": "" },
+      { "letter": "N", "definition": "", "answer": "" },
+      { "letter": "O", "definition": "", "answer": "" },
+      { "letter": "P", "definition": "", "answer": "" },
+      { "letter": "Q", "definition": "", "answer": "" },
+      { "letter": "R", "definition": "", "answer": "" },
+      { "letter": "S", "definition": "", "answer": "" },
+      { "letter": "T", "definition": "", "answer": "" },
+      { "letter": "U", "definition": "", "answer": "" },
+      { "letter": "V", "definition": "", "answer": "" },
+      { "letter": "W", "definition": "", "answer": "" },
+      { "letter": "X", "definition": "", "answer": "" },
+      { "letter": "Y", "definition": "", "answer": "" },
+      { "letter": "Z", "definition": "", "answer": "" }
+    ]
+  },
+  {
+    "name": "behaviour",
+    "type": "group",
+    "label": "Behavioural settings",
+    "importance": "low",
+    "fields": [
+      {
+        "name": "includeLetterEnye",
+        "type": "boolean",
+        "label": "Include letter Ñ",
+        "description": "When enabled, adds Ñ after N if it is not already in the letter list. Leave off for languages without Ñ (for example English).",
+        "default": false
       },
-      "default": [
-        {"letter": "A", "definition": "", "answer": ""},
-        {"letter": "B", "definition": "", "answer": ""},
-        {"letter": "C", "definition": "", "answer": ""},
-        {"letter": "D", "definition": "", "answer": ""},
-        {"letter": "E", "definition": "", "answer": ""},
-        {"letter": "F", "definition": "", "answer": ""},
-        {"letter": "G", "definition": "", "answer": ""},
-        {"letter": "H", "definition": "", "answer": ""},
-        {"letter": "I", "definition": "", "answer": ""},
-        {"letter": "J", "definition": "", "answer": ""},
-        {"letter": "K", "definition": "", "answer": ""},
-        {"letter": "L", "definition": "", "answer": ""},
-        {"letter": "M", "definition": "", "answer": ""},
-        {"letter": "N", "definition": "", "answer": ""},
-        {"letter": "O", "definition": "", "answer": ""},
-        {"letter": "P", "definition": "", "answer": ""},
-        {"letter": "Q", "definition": "", "answer": ""},
-        {"letter": "R", "definition": "", "answer": ""},
-        {"letter": "S", "definition": "", "answer": ""},
-        {"letter": "T", "definition": "", "answer": ""},
-        {"letter": "U", "definition": "", "answer": ""},
-        {"letter": "V", "definition": "", "answer": ""},
-        {"letter": "W", "definition": "", "answer": ""},
-        {"letter": "X", "definition": "", "answer": ""},
-        {"letter": "Y", "definition": "", "answer": ""},
-        {"letter": "Z", "definition": "", "answer": ""}
-      ]
-    },
-    {
-      "name": "behavioralSettings",
-      "type": "group",
-      "label": "Configuración de comportamiento",
-      "fields": [
-        {
-          "name": "caseSensitive",
-          "type": "boolean",
-          "label": "Distinguir mayúsculas/minúsculas",
-          "default": false
-        },
-        {
-          "name": "ignoreAccents",
-          "type": "boolean",
-          "label": "Ignorar acentos",
-          "default": true
-        },
-        {
-          "name": "allowPasapalabra",
-          "type": "boolean",
-          "label": "Permitir 'Pasapalabra'",
-          "default": true,
-          "description": "Permitir a los estudiantes saltar una pregunta para volver más tarde"
-        },
-        {
-          "name": "showScore",
-          "type": "boolean",
-          "label": "Mostrar puntuación",
-          "default": true
+      {
+        "name": "caseSensitive",
+        "type": "boolean",
+        "label": "Case sensitive answers",
+        "default": false
+      },
+      {
+        "name": "ignoreAccents",
+        "type": "boolean",
+        "label": "Ignore accents",
+        "default": true
+      },
+      {
+        "name": "allowPass",
+        "type": "boolean",
+        "label": "Allow pass",
+        "default": true,
+        "description": "Lets the learner skip a letter and come back later."
+      },
+      {
+        "name": "showScore",
+        "type": "boolean",
+        "label": "Show score during the game",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "design",
+    "type": "group",
+    "label": "Design",
+    "importance": "low",
+    "fields": [
+      {
+        "name": "wheelColor",
+        "type": "text",
+        "widget": "colorSelector",
+        "label": "Wheel letter color",
+        "default": "#3498db",
+        "optional": true,
+        "spectrum": {
+          "showInput": true
         }
-      ]
-    },
-    {
-      "name": "designSettings",
-      "type": "group",
-      "label": "Configuración de diseño",
-      "fields": [
-        {
-          "name": "roscoColor",
-          "type": "text",
-          "label": "Color del rosco",
-          "default": "#3498db",
-          "widget": "colorSelector"
-        },
-        {
-          "name": "correctColor",
-          "type": "text",
-          "label": "Color para respuestas correctas",
-          "default": "#2ecc71",
-          "widget": "colorSelector"
-        },
-        {
-          "name": "wrongColor",
-          "type": "text",
-          "label": "Color para respuestas incorrectas",
-          "default": "#e74c3c",
-          "widget": "colorSelector"
+      },
+      {
+        "name": "correctColor",
+        "type": "text",
+        "widget": "colorSelector",
+        "label": "Correct letter color",
+        "default": "#2ecc71",
+        "optional": true,
+        "spectrum": {
+          "showInput": true
         }
-      ]
-    }
-  ]
+      },
+      {
+        "name": "wrongColor",
+        "type": "text",
+        "widget": "colorSelector",
+        "label": "Incorrect letter color",
+        "default": "#e74c3c",
+        "optional": true,
+        "spectrum": {
+          "showInput": true
+        }
+      }
+    ]
+  },
+  {
+    "name": "l10n",
+    "type": "group",
+    "label": "Localize",
+    "importance": "low",
+    "common": true,
+    "fields": [
+      {
+        "name": "submitButton",
+        "type": "text",
+        "label": "Submit button",
+        "default": "Answer"
+      },
+      {
+        "name": "passButton",
+        "type": "text",
+        "label": "Pass button",
+        "default": "Pass"
+      },
+      {
+        "name": "tryAgain",
+        "type": "text",
+        "label": "Retry button",
+        "default": "Try again"
+      },
+      {
+        "name": "showSolution",
+        "type": "text",
+        "label": "Show solution button",
+        "default": "Show solution"
+      },
+      {
+        "name": "answerPlaceholder",
+        "type": "text",
+        "label": "Answer input placeholder",
+        "default": "Type your answer..."
+      },
+      {
+        "name": "timeLabel",
+        "type": "text",
+        "label": "Timer label",
+        "default": "Time: @time s",
+        "description": "@time is replaced by the seconds left."
+      },
+      {
+        "name": "scoreLabel",
+        "type": "text",
+        "label": "Score label",
+        "default": "Score: @score",
+        "description": "@score is replaced by the current score."
+      }
+    ]
+  }
+]

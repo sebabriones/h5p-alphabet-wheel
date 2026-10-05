@@ -1,40 +1,53 @@
 {
-    "title": "Pasapalabra",
-    "description": "Juego de preguntas y respuestas estilo rosco de letras.",
+  "title": "Alphabet Wheel",
+  "description": "Letter-wheel quiz: answer definitions around the alphabet (optional letter enye).",
+  "contentType": "Question",
+  "majorVersion": 0,
+  "minorVersion": 1,
+  "patchVersion": 0,
+  "runnable": 1,
+  "embedTypes": [
+    "iframe"
+  ],
+  "author": "Ariel Hernández Friz",
+  "license": "MIT",
+  "machineName": "H5P.AlphabetWheel",
+  "coreApi": {
     "majorVersion": 1,
-    "minorVersion": 0,
-    "patchVersion": 0,
-    "runnable": 1,
-    "author": "Ariel Hernández Friz",
-    "license": "MIT",
-    "machineName": "H5P.PasaPalabra",
-    "coreApi": {
+    "minorVersion": 23
+  },
+  "preloadedJs": [
+    {
+      "path": "scripts/alphabet-wheel.js"
+    }
+  ],
+  "preloadedCss": [
+    {
+      "path": "styles/alphabet-wheel.css"
+    }
+  ],
+  "preloadedDependencies": [
+    {
+      "machineName": "FontAwesome",
+      "majorVersion": 4,
+      "minorVersion": 5
+    },
+    {
+      "machineName": "H5P.JoubelUICFRD",
       "majorVersion": 1,
       "minorVersion": 0
     },
-    "preloadedJs": [
-      { "path": "js/pasapalabra.js" }
-    ],
-    "preloadedCss": [
-      { "path": "css/pasapalabra.css" }
-    ],
-    "preloadedDependencies": [
-      {
-        "machineName": "FontAwesome",
-        "majorVersion": 4,
-        "minorVersion": 5
-      },
-      {
-        "machineName": "H5P.JoubelUI",
-        "majorVersion": 1,
-        "minorVersion": 3
-      }
-    ],
-    "editorDependencies": [
-      {
-        "machineName": "H5PEditor.ColorSelector",
-        "majorVersion": 1,
-        "minorVersion": 3
-      }
-    ]
-  }
+    {
+      "machineName": "H5P.QuestionCFRD",
+      "majorVersion": 1,
+      "minorVersion": 0
+    }
+  ],
+  "editorDependencies": [
+    {
+      "machineName": "H5PEditor.ColorSelectorCFRD",
+      "majorVersion": 1,
+      "minorVersion": 0
+    }
+  ]
+}
