@@ -1109,10 +1109,11 @@
         "default": false
       },
       {
-        "name": "ignoreAccents",
+        "name": "ignoreTildes",
         "type": "boolean",
-        "label": "Ignore accents",
-        "default": true
+        "label": "Ignore diacritics",
+        "default": true,
+        "description": "Treats answers as equal when they only differ by written diacritics (for example a vs á). The letter ñ is kept as a distinct letter."
       },
       {
         "name": "allowPass",
@@ -1153,19 +1154,6 @@
     "description": "Message shown on the results slide at the end, according to the percentage of correct letters.",
     "fields": [
       {
-        "name": "popupBackgroundColor",
-        "type": "text",
-        "widget": "colorSelector",
-        "label": "Popup background color",
-        "default": "#ffffff",
-        "importance": "low",
-        "optional": true,
-        "spectrum": {
-          "showInput": true
-        },
-        "description": "Background color of the result popup."
-      },
-      {
         "name": "feedbackTextColor",
         "type": "text",
         "widget": "colorSelector",
@@ -1176,7 +1164,7 @@
         "spectrum": {
           "showInput": true
         },
-        "description": "Text color of the message inside the popup."
+        "description": "Text color of the message on the results slide."
       },
       {
         "name": "overallFeedback",
@@ -1700,6 +1688,18 @@
               "showInput": true
             },
             "importance": "low"
+          },
+          {
+            "name": "borderRadius",
+            "type": "number",
+            "label": "Corner radius",
+            "importance": "low",
+            "default": 2,
+            "min": 0,
+            "max": 4,
+            "decimals": 2,
+            "unit": "em",
+            "description": "Corner radius for Answer, Pass and Start. Matches the default H5P button shape (pill) when left at 2 em."
           }
         ]
       },
@@ -1794,11 +1794,12 @@
             "type": "number",
             "label": "Corner radius",
             "importance": "low",
-            "default": 0.5,
+            "default": 2,
             "min": 0,
             "max": 4,
             "decimals": 2,
-            "unit": "em"
+            "unit": "em",
+            "description": "Corner radius for Retry and other Question action buttons. Matches the default H5P button shape (pill) when left at 2 em."
           }
         ]
       }
@@ -1811,6 +1812,12 @@
     "importance": "low",
     "common": true,
     "fields": [
+      {
+        "name": "startButton",
+        "type": "text",
+        "label": "Start button",
+        "default": "Start"
+      },
       {
         "name": "submitButton",
         "type": "text",

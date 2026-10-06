@@ -489,7 +489,8 @@
           "label": "Case sensitive answers"
         },
         {
-          "label": "Ignore accents"
+          "label": "Ignore diacritics",
+          "description": "Treats answers as equal when they only differ by written diacritics (for example a vs á). The letter ñ is kept as a distinct letter."
         },
         {
           "label": "Allow pass",
@@ -513,12 +514,8 @@
       "description": "Message shown on the results slide at the end, according to the percentage of correct letters.",
       "fields": [
         {
-          "label": "Popup background color",
-          "description": "Background color of the result popup."
-        },
-        {
           "label": "Feedback text color",
-          "description": "Text color of the message inside the popup."
+          "description": "Text color of the message on the results slide."
         },
         {
           "label": "Define custom feedback for any score range",
@@ -698,6 +695,10 @@
             },
             {
               "label": "Pass hover background color"
+            },
+            {
+              "label": "Corner radius",
+              "description": "Corner radius for Answer, Pass and Start. Matches the default H5P button shape (pill) when left at 2 em."
             }
           ]
         },
@@ -727,7 +728,8 @@
               "label": "Hover border color"
             },
             {
-              "label": "Corner radius"
+              "label": "Corner radius",
+              "description": "Corner radius for Retry and other Question action buttons. Matches the default H5P button shape (pill) when left at 2 em."
             }
           ]
         }
@@ -736,6 +738,10 @@
     {
       "label": "Localize",
       "fields": [
+        {
+          "label": "Start button",
+          "default": "Start"
+        },
         {
           "label": "Submit button",
           "default": "Answer"

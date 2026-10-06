@@ -32,6 +32,7 @@
   --h5p-aw-wrong-border: #a33b3b;
   --h5p-aw-wrong-color: #8a2b2b;
   --h5p-aw-pending: #7ea0c4;
+  --h5p-aw-button-radius: 2em;
   --h5p-aw-submit-bg: #1a73d9;
   --h5p-aw-submit-color: #ffffff;
   --h5p-aw-submit-hover: #1356a3;
@@ -147,11 +148,51 @@ html.h5p-semi-fullscreen .h5p-alphabet-wheel > .h5p-question-content,
 }
 
 .h5p-aw-game-view {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   overflow: auto;
   min-height: 0;
+}
+
+.h5p-aw-start-screen {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1em;
+  box-sizing: border-box;
+  background: rgba(247, 249, 251, 0.72);
+}
+
+.h5p-aw-game-view.is-waiting .h5p-aw-game-area {
+  visibility: hidden;
+}
+
+.h5p-aw-game-view.is-waiting .h5p-aw-letter {
+  pointer-events: none;
+  cursor: default;
+}
+
+.h5p-aw-start-button.h5p-joubelui-button,
+.h5p-aw-start-button {
+  min-width: 8em;
+  border-radius: var(--h5p-aw-button-radius);
+  background-color: var(--h5p-aw-submit-bg);
+  border-color: var(--h5p-aw-submit-bg);
+  color: var(--h5p-aw-submit-color);
+}
+
+.h5p-aw-start-button.h5p-joubelui-button:hover,
+.h5p-aw-start-button.h5p-joubelui-button:focus-visible,
+.h5p-aw-start-button:hover,
+.h5p-aw-start-button:focus-visible {
+  background-color: var(--h5p-aw-submit-hover);
+  border-color: var(--h5p-aw-submit-hover);
+  color: var(--h5p-aw-submit-color);
 }
 
 .h5p-aw-result-feedback {
@@ -359,7 +400,7 @@ html.h5p-semi-fullscreen .h5p-alphabet-wheel > .h5p-question-content,
 .h5p-aw-pass {
   padding: 0.6em 1.1em;
   font-size: 1em;
-  border-radius: var(--h5p-aw-radius);
+  border-radius: var(--h5p-aw-button-radius);
   cursor: pointer;
   transition: background-color 0.2s, border-color 0.2s, color 0.2s;
   flex: 1;

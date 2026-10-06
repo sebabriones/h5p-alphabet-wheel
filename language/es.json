@@ -360,7 +360,8 @@
           "label": "Respuestas sensibles a mayúsculas"
         },
         {
-          "label": "Ignorar acentos"
+          "label": "Ignorar tildes",
+          "description": "Trata como iguales las respuestas que solo difieren por tildes escritas (por ejemplo a frente a á). La letra ñ se mantiene como letra distinta."
         },
         {
           "label": "Permitir pasar",
@@ -381,7 +382,76 @@
     },
     {
       "label": "Feedback global",
-      "description": "Mensaje mostrado en la diapositiva de resultados al final, según el porcentaje de letras correctas."
+      "description": "Mensaje mostrado en la diapositiva de resultados al final, según el porcentaje de letras correctas.",
+      "fields": [
+        {
+          "label": "Color del texto del feedback",
+          "description": "Color del mensaje en la diapositiva de resultados."
+        },
+        {
+          "label": "Definir feedback personalizado por rango de puntaje",
+          "description": "Usa \"Agregar rango\" para tantos rangos como necesites. Ejemplo: 0-20% Bajo, 21-90% Medio, 91-100% Excelente. @score y @total se reemplazan por el puntaje y el máximo.",
+          "field": {
+            "fields": [
+              {
+                "label": "Rango de puntaje"
+              },
+              {},
+              {
+                "label": "Feedback para el rango definido",
+                "placeholder": "Escribe el feedback"
+              },
+              {
+                "label": "Ajustes de apariencia",
+                "fields": [
+                  {
+                    "label": "Texto destacado inicial",
+                    "placeholder": "p. ej. ¡Correcto! o Sigue practicando"
+                  },
+                  {
+                    "label": "Texto inicial en negrita"
+                  },
+                  {
+                    "label": "Color del texto destacado"
+                  },
+                  {
+                    "label": "Alineación del texto",
+                    "description": "Solo si no hay imagen. Con imagen, la alineación sigue la posición de la imagen.",
+                    "options": [
+                      {
+                        "label": "Izquierda"
+                      },
+                      {
+                        "label": "Centro"
+                      },
+                      {
+                        "label": "Derecha"
+                      }
+                    ]
+                  },
+                  {
+                    "label": "Imagen de feedback"
+                  },
+                  {
+                    "label": "Posición de la imagen",
+                    "options": [
+                      {
+                        "label": "Sobre el texto"
+                      },
+                      {
+                        "label": "A la izquierda del texto"
+                      },
+                      {
+                        "label": "A la derecha del texto"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
     },
     {
       "label": "Apariencia",
@@ -496,6 +566,10 @@
             },
             {
               "label": "Color de fondo al pasar el cursor (Pasar)"
+            },
+            {
+              "label": "Radio de esquinas",
+              "description": "Radio de esquinas para Responder, Pasar y Comenzar. Con 2 em coincide con la forma de botón H5P por defecto (píldora)."
             }
           ]
         },
@@ -525,7 +599,8 @@
               "label": "Color de borde al pasar el cursor"
             },
             {
-              "label": "Radio de esquinas"
+              "label": "Radio de esquinas",
+              "description": "Radio de esquinas para Reintentar y otros botones de acción. Con 2 em coincide con la forma de botón H5P por defecto (píldora)."
             }
           ]
         }
@@ -534,6 +609,10 @@
     {
       "label": "Localización",
       "fields": [
+        {
+          "label": "Botón comenzar",
+          "default": "Comenzar"
+        },
         {
           "label": "Botón enviar",
           "default": "Responder"

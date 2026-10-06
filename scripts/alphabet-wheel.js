@@ -193,6 +193,7 @@ H5P.AlphabetWheel = (function ($) {
     this.contentId = contentId;
     this.contentData = contentData;
     this.finished = false;
+    this.gameStarted = false;
     this.answered = false;
     this.currentLetter = null;
     this.score = 0;
@@ -213,7 +214,7 @@ H5P.AlphabetWheel = (function ($) {
       letters: [],
       behaviour: {
         caseSensitive: false,
-        ignoreAccents: true,
+        ignoreTildes: true,
         allowPass: true,
         showScore: true,
         enableRetry: true,
@@ -233,10 +234,15 @@ H5P.AlphabetWheel = (function ($) {
         },
         input: {},
         meta: {},
-        gameButtons: {},
-        actionButtons: {}
+        gameButtons: {
+          borderRadius: 2
+        },
+        actionButtons: {
+          borderRadius: 2
+        }
       },
       l10n: {
+        startButton: 'Start',
         submitButton: 'Answer',
         passButton: 'Pass',
         tryAgain: 'Try again',
@@ -261,7 +267,7 @@ H5P.AlphabetWheel = (function ($) {
       timeLimit: Math.max(30, Number(this.params.timeLimit) || 300),
       letters: filterPlayableLetters(this.params.letters),
       caseSensitive: isOn(behaviour.caseSensitive),
-      ignoreAccents: behaviour.ignoreAccents === undefined ? true : isOn(behaviour.ignoreAccents),
+      ignoreTildes: behaviour.ignoreTildes === undefined ? true : isOn(behaviour.ignoreTildes),
       allowPass: behaviour.allowPass === undefined ? true : isOn(behaviour.allowPass),
       showScore: behaviour.showScore === undefined ? true : isOn(behaviour.showScore),
       enableRetry: behaviour.enableRetry === undefined ? true : isOn(behaviour.enableRetry),
@@ -303,11 +309,8 @@ H5P.AlphabetWheel = (function ($) {
       self.syncFullscreenLayout(true);
       self.scheduleInstructions();
 
-      if (self.hasContent && !self.finished) {
-        self.startTimer();
-        if (!self.currentLetter) {
-          self.selectNextAvailableLetter();
-        }
+      if (self.hasContent && !self.finished && !self.gameStarted) {
+        self.showStartScreen();
       }
 
       self.trigger('resize');
@@ -384,6 +387,10 @@ H5P.AlphabetWheel = (function ($) {
     setColor($targets, '--h5p-aw-meta-accent', meta.timerColor);
     setColor($targets, '--h5p-aw-score-color', meta.scoreColor);
 
+    $targets.css(
+      '--h5p-aw-button-radius',
+      clampNumber(gameButtons.borderRadius, 0, 4, 2) + 'em'
+    );
     setColor($targets, '--h5p-aw-submit-bg', gameButtons.submitBackgroundColor);
     setColor($targets, '--h5p-aw-submit-color', gameButtons.submitTextColor);
     setColor($targets, '--h5p-aw-submit-hover', gameButtons.submitHoverBackgroundColor);
@@ -403,7 +410,7 @@ H5P.AlphabetWheel = (function ($) {
           borderColor: buttons.borderColor,
           hoverBorderColor: buttons.hoverBorderColor
         },
-        borderRadius: buttons.borderRadius,
+        borderRadius: buttons.borderRadius === undefined ? 2 : buttons.borderRadius,
         useGradientBackground: false
       });
     }
@@ -645,8 +652,12 @@ H5P.AlphabetWheel = (function ($) {
     this.stopTimer();
     this.clearLetterAnimations();
     this.$gameView.empty();
+    this.$gameView.removeClass('is-waiting');
+    this.$startScreen = null;
+    this.$startButton = null;
     this.letterElements = {};
     this.currentLetter = null;
+    this.gameStarted = false;
 
     if (!this.hasContent) {
       this.$gameView.append($('<p>', {
@@ -659,6 +670,79 @@ H5P.AlphabetWheel = (function ($) {
     this.initGameState();
     this.createGameStructure();
     this.setupInteractions();
+    this.showStartScreen();
+  };
+
+  /**
+   * Show the start overlay until the learner begins the round.
+   */
+  AlphabetWheel.prototype.showStartScreen = function () {
+    var self = this;
+    var $button;
+
+    if (!this.hasContent || this.finished) {
+      return;
+    }
+
+    this.gameStarted = false;
+    this.stopTimer();
+    this.$gameView.addClass('is-waiting');
+
+    if (this.$startScreen && this.$startScreen.length) {
+      this.$startScreen.show();
+      if (this.$startButton && this.$startButton.length) {
+        this.$startButton.focus();
+      }
+      return;
+    }
+
+    if (H5P.JoubelUICFRD && typeof H5P.JoubelUICFRD.createButton === 'function') {
+      $button = H5P.JoubelUICFRD.createButton({
+        'class': 'h5p-aw-start-button',
+        html: this.options.l10n.startButton
+      });
+    }
+    else {
+      $button = $('<button>', {
+        type: 'button',
+        'class': 'h5p-aw-start-button h5p-joubelui-button',
+        text: this.options.l10n.startButton
+      });
+    }
+
+    this.$startButton = $button;
+    this.$startScreen = $('<div>', { 'class': 'h5p-aw-start-screen' });
+    this.$startScreen.append($button);
+    this.$gameView.append(this.$startScreen);
+
+    $button.on('click.aw', function () {
+      self.startGame();
+    });
+
+    $button.focus();
+  };
+
+  /**
+   * Begin the timed round after the learner confirms start.
+   */
+  AlphabetWheel.prototype.startGame = function () {
+    if (!this.hasContent || this.finished || this.gameStarted) {
+      return;
+    }
+
+    this.gameStarted = true;
+    this.$gameView.removeClass('is-waiting');
+
+    if (this.$startScreen && this.$startScreen.length) {
+      this.$startScreen.hide();
+    }
+
+    this.startTimer();
+    if (!this.currentLetter) {
+      this.selectNextAvailableLetter();
+    }
+
+    this.trigger('resize');
   };
 
   AlphabetWheel.prototype.initGameState = function () {
@@ -808,7 +892,7 @@ H5P.AlphabetWheel = (function ($) {
     var key = String(letter || '').toUpperCase();
     var previousKey;
 
-    if (self.finished) {
+    if (self.finished || !self.gameStarted) {
       return;
     }
 
@@ -919,7 +1003,7 @@ H5P.AlphabetWheel = (function ($) {
     var isCorrect;
     var alternatives;
 
-    if (!self.currentLetter || self.finished) {
+    if (!self.currentLetter || self.finished || !self.gameStarted) {
       return;
     }
 
@@ -939,9 +1023,9 @@ H5P.AlphabetWheel = (function ($) {
       correctAnswer = correctAnswer.toLowerCase();
     }
 
-    if (self.options.ignoreAccents) {
-      userAnswer = self.removeAccents(userAnswer);
-      correctAnswer = self.removeAccents(correctAnswer);
+    if (self.options.ignoreTildes) {
+      userAnswer = self.removeTildes(userAnswer);
+      correctAnswer = self.removeTildes(correctAnswer);
     }
 
     isCorrect = userAnswer === correctAnswer;
@@ -956,8 +1040,8 @@ H5P.AlphabetWheel = (function ($) {
         if (!self.options.caseSensitive) {
           normalizedAlt = normalizedAlt.toLowerCase();
         }
-        if (self.options.ignoreAccents) {
-          normalizedAlt = self.removeAccents(normalizedAlt);
+        if (self.options.ignoreTildes) {
+          normalizedAlt = self.removeTildes(normalizedAlt);
         }
         return userAnswer === normalizedAlt;
       });
@@ -996,7 +1080,7 @@ H5P.AlphabetWheel = (function ($) {
     var self = this;
     var letter;
 
-    if (!self.currentLetter || self.finished) {
+    if (!self.currentLetter || self.finished || !self.gameStarted) {
       return;
     }
 
@@ -1189,7 +1273,7 @@ H5P.AlphabetWheel = (function ($) {
    * @param {string} str
    * @returns {string}
    */
-  AlphabetWheel.prototype.removeAccents = function (str) {
+  AlphabetWheel.prototype.removeTildes = function (str) {
     return String(str || '')
       .replace(/Ñ/g, '\u0001')
       .replace(/ñ/g, '\u0002')
@@ -1203,6 +1287,7 @@ H5P.AlphabetWheel = (function ($) {
     this.hideButton('try-again');
     this.removeFeedback();
     this.finished = false;
+    this.gameStarted = false;
     this.answered = false;
     this.score = 0;
     this.finalScore = 0;
@@ -1213,11 +1298,6 @@ H5P.AlphabetWheel = (function ($) {
     this.hasContent = this.options.letters.length > 0;
     this.buildGameDom();
     this.showGameView();
-
-    if (this.hasContent) {
-      this.startTimer();
-      this.selectNextAvailableLetter();
-    }
 
     delete this.activityStartTime;
     this.setActivityStarted();
