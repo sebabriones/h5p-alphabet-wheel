@@ -755,7 +755,8 @@ H5P.AlphabetWheel = (function ($) {
         answered: false,
         correct: false,
         passed: false,
-        attempts: 0
+        attempts: 0,
+        userResponse: ''
       };
     });
   };
@@ -1017,6 +1018,7 @@ H5P.AlphabetWheel = (function ($) {
     }
 
     self.answered = true;
+    self.gameState[letter].userResponse = userAnswer;
 
     if (!self.options.caseSensitive) {
       userAnswer = userAnswer.toLowerCase();
@@ -1086,6 +1088,7 @@ H5P.AlphabetWheel = (function ($) {
 
     letter = String(self.currentLetter.letter).toUpperCase();
     self.gameState[letter].passed = true;
+    self.gameState[letter].userResponse = '';
     self.answered = true;
     self.clearAnswerFeedback();
 
@@ -1226,8 +1229,84 @@ H5P.AlphabetWheel = (function ($) {
       this.showButton('try-again');
     }
 
-    this.triggerXAPIScored(score, maxScore, 'answered');
+    this.emitAnsweredXAPI(score, maxScore);
     this.trigger('resize');
+  };
+
+  /**
+   * Keep xAPI tokens free of the H5P list delimiter.
+   * @param {string} value
+   * @returns {string}
+   */
+  function xapiToken(value) {
+    return String(value || '')
+      .replace(/\[,\]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  /**
+   * Learner answers in letter order. Passed or unanswered letters stay empty.
+   * @returns {string}
+   */
+  AlphabetWheel.prototype.getXapiResponse = function () {
+    var self = this;
+
+    return (this.options.letters || []).map(function (item) {
+      var letter = String(item.letter || '').toUpperCase();
+      var state = self.gameState && self.gameState[letter];
+
+      return xapiToken(state && state.userResponse);
+    }).join('[,]');
+  };
+
+  /**
+   * Primary correct answer for each letter, in the same order as the response.
+   * @returns {string}
+   */
+  AlphabetWheel.prototype.getXapiCorrectPattern = function () {
+    return (this.options.letters || []).map(function (item) {
+      return xapiToken(item.answer);
+    }).join('[,]');
+  };
+
+  /**
+   * Scored answered statement with response and correctResponsesPattern.
+   * @param {number} score
+   * @param {number} maxScore
+   */
+  AlphabetWheel.prototype.emitAnsweredXAPI = function (score, maxScore) {
+    var xAPIEvent = this.createXAPIEventTemplate('answered');
+    var success = maxScore > 0 && score === maxScore;
+
+    xAPIEvent.setScoredResult(score, maxScore, this, true, success);
+    xAPIEvent.data.statement.result.response = this.getXapiResponse();
+    xAPIEvent.data.statement.object.definition.interactionType = 'other';
+    xAPIEvent.data.statement.object.definition.correctResponsesPattern = [
+      this.getXapiCorrectPattern()
+    ];
+    this.trigger(xAPIEvent);
+  };
+
+  /**
+   * @returns {{statement: object}}
+   */
+  AlphabetWheel.prototype.getXAPIData = function () {
+    var score = this.getScore();
+    var maxScore = this.getMaxScore();
+    var xAPIEvent = this.createXAPIEventTemplate('answered');
+    var success = maxScore > 0 && score === maxScore;
+
+    xAPIEvent.setScoredResult(score, maxScore, this, true, success);
+    xAPIEvent.data.statement.result.response = this.getXapiResponse();
+    xAPIEvent.data.statement.object.definition.interactionType = 'other';
+    xAPIEvent.data.statement.object.definition.correctResponsesPattern = [
+      this.getXapiCorrectPattern()
+    ];
+
+    return {
+      statement: xAPIEvent.data.statement
+    };
   };
 
   /**
