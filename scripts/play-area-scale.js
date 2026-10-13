@@ -10,7 +10,7 @@ H5P.AlphabetWheel.PlayArea = (function () {
   var ASPECT_RATIO = 16 / 9;
   var BASE_HEIGHT = Math.round(BASE_WIDTH / ASPECT_RATIO);
   var BASE_FONT_SIZE = 16;
-  var MIN_SCALE = 0.35;
+  var MIN_SCALE = 0.2;
   var MAX_SCALE = 1;
 
   function getDesignSize() {

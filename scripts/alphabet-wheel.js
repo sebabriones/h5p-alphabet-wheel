@@ -454,6 +454,7 @@ H5P.AlphabetWheel = (function ($) {
       this._lastFullscreenState === isFullscreen
     ) {
       this.updateInstructionsScale();
+      this.fitGameLayout();
       return;
     }
 
@@ -476,6 +477,64 @@ H5P.AlphabetWheel = (function ($) {
     }
 
     this.updateInstructionsScale();
+    this.fitGameLayout();
+  };
+
+  /**
+   * Scale the wheel and answer panel together so the row stays inside the play area.
+   */
+  AlphabetWheel.prototype.fitGameLayout = function () {
+    var viewEl;
+    var containerEl;
+    var availableWidth;
+    var availableHeight;
+    var naturalWidth;
+    var naturalHeight;
+    var scale;
+
+    if (!this.$gameContainer || !this.$gameContainer.length || !this.$gameView || !this.$gameView.length) {
+      return;
+    }
+
+    if (!this.$gameView.is(':visible')) {
+      this.$gameContainer.css({
+        transform: 'none',
+        marginBottom: ''
+      });
+      return;
+    }
+
+    viewEl = this.$gameView[0];
+    containerEl = this.$gameContainer[0];
+
+    this.$gameContainer.css({
+      transform: 'none',
+      marginBottom: ''
+    });
+
+    availableWidth = viewEl.clientWidth;
+    availableHeight = viewEl.clientHeight;
+
+    if (availableWidth <= 0 || availableHeight <= 0) {
+      return;
+    }
+
+    naturalWidth = containerEl.scrollWidth || containerEl.offsetWidth;
+    naturalHeight = containerEl.scrollHeight || containerEl.offsetHeight;
+    scale = (naturalWidth > 0 && naturalHeight > 0) ?
+      Math.min(availableWidth / naturalWidth, availableHeight / naturalHeight) :
+      1;
+    scale = Math.max(0.2, Math.min(1, scale));
+
+    if (scale >= 0.995) {
+      return;
+    }
+
+    this.$gameContainer.css({
+      transform: 'scale(' + scale.toFixed(4) + ')',
+      transformOrigin: 'top center',
+      marginBottom: Math.round(-naturalHeight * (1 - scale)) + 'px'
+    });
   };
 
   /**
@@ -816,6 +875,7 @@ H5P.AlphabetWheel = (function ($) {
       self.letterElements[letter] = $letter;
     });
 
+    self.$gameContainer = $gameContainer;
     $gameContainer.append($wheel);
 
     self.$definition = $('<div>', { 'class': 'h5p-aw-definition' });
