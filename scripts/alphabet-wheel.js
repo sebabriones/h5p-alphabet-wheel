@@ -1227,13 +1227,6 @@ H5P.AlphabetWheel = (function ($) {
     }
 
     this.triggerXAPIScored(score, maxScore, 'answered');
-    this.triggerXAPIScored(
-      score,
-      maxScore,
-      'completed',
-      true,
-      maxScore > 0 && score === maxScore
-    );
     this.trigger('resize');
   };
 
