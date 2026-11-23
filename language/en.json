@@ -514,8 +514,9 @@
       "description": "Message shown on the results slide at the end, according to the percentage of correct letters.",
       "fields": [
         {
-          "label": "Feedback text color",
-          "description": "Text color of the message on the results slide."
+          "label": "Feedback body font size",
+          "description": "Base font size of the feedback message on the results slide (relative to the content font). Per-fragment sizes can also be set in the feedback editor.",
+          "default": 1
         },
         {
           "label": "Define custom feedback for any score range",
@@ -531,33 +532,9 @@
                 "placeholder": "Fill in the feedback"
               },
               {
-                "label": "Appearance settings",
+                "label": "Feedback image",
+                "description": "Optional image for this score range. Text color and formatting are set in the feedback message editor.",
                 "fields": [
-                  {
-                    "label": "Highlighted lead text",
-                    "placeholder": "e.g. Correct! or Keep practicing"
-                  },
-                  {
-                    "label": "Bold lead text"
-                  },
-                  {
-                    "label": "Highlighted lead text color"
-                  },
-                  {
-                    "label": "Text alignment",
-                    "description": "Only used when no feedback image is set. With an image, text alignment follows image position (left/right: left aligned, above: centered).",
-                    "options": [
-                      {
-                        "label": "Left"
-                      },
-                      {
-                        "label": "Center"
-                      },
-                      {
-                        "label": "Right"
-                      }
-                    ]
-                  },
                   {
                     "label": "Feedback image"
                   },

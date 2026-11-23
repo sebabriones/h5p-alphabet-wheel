@@ -385,8 +385,9 @@
       "description": "Mensaje mostrado en la diapositiva de resultados al final, según el porcentaje de letras correctas.",
       "fields": [
         {
-          "label": "Color del texto del feedback",
-          "description": "Color del mensaje en la diapositiva de resultados."
+          "label": "Tamaño de letra del cuerpo del feedback",
+          "description": "Tamaño de letra base del mensaje de feedback en la diapositiva de resultados (relativo a la tipografía del contenido). También se puede cambiar el tamaño por fragmento en el editor del mensaje.",
+          "default": 1
         },
         {
           "label": "Definir feedback personalizado por rango de puntaje",
@@ -402,33 +403,9 @@
                 "placeholder": "Escribe el feedback"
               },
               {
-                "label": "Ajustes de apariencia",
+                "label": "Imagen de feedback",
+                "description": "Imagen opcional para este rango. El color y el formato del texto se configuran en el editor del mensaje.",
                 "fields": [
-                  {
-                    "label": "Texto destacado inicial",
-                    "placeholder": "p. ej. ¡Correcto! o Sigue practicando"
-                  },
-                  {
-                    "label": "Texto inicial en negrita"
-                  },
-                  {
-                    "label": "Color del texto destacado"
-                  },
-                  {
-                    "label": "Alineación del texto",
-                    "description": "Solo si no hay imagen. Con imagen, la alineación sigue la posición de la imagen.",
-                    "options": [
-                      {
-                        "label": "Izquierda"
-                      },
-                      {
-                        "label": "Centro"
-                      },
-                      {
-                        "label": "Derecha"
-                      }
-                    ]
-                  },
                   {
                     "label": "Imagen de feedback"
                   },

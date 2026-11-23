@@ -1154,17 +1154,17 @@
     "description": "Message shown on the results slide at the end, according to the percentage of correct letters.",
     "fields": [
       {
-        "name": "feedbackTextColor",
-        "type": "text",
-        "widget": "colorSelector",
-        "label": "Feedback text color",
-        "default": "#333333",
+        "name": "feedbackBodyFontSize",
+        "type": "number",
+        "label": "Feedback body font size",
+        "description": "Base font size of the feedback message on the results slide (relative to the content font). Per-fragment sizes can also be set in the feedback editor.",
         "importance": "low",
-        "optional": true,
-        "spectrum": {
-          "showInput": true
-        },
-        "description": "Text color of the message on the results slide."
+        "default": 1,
+        "min": 0.5,
+        "max": 3,
+        "decimals": 2,
+        "unit": "em",
+        "optional": true
       },
       {
         "name": "overallFeedback",
@@ -1207,70 +1207,35 @@
             {
               "name": "feedback",
               "type": "text",
-              "maxLength": 2048,
+              "widget": "html",
               "label": "Feedback for defined score range",
               "importance": "low",
               "placeholder": "Fill in the feedback",
-              "optional": true
+              "optional": true,
+              "enterMode": "p",
+              "tags": [
+                "strong",
+                "em",
+                "u",
+                "del",
+                "code",
+                "br",
+                "p"
+              ],
+              "font": {
+                "size": true,
+                "color": true
+              }
             },
             {
               "name": "appearance",
               "type": "group",
-              "label": "Appearance settings",
+              "label": "Feedback image",
               "importance": "low",
               "expanded": false,
               "optional": true,
+              "description": "Optional image for this score range. Text color and formatting are set in the feedback message editor.",
               "fields": [
-                {
-                  "name": "feedbackLeadText",
-                  "type": "text",
-                  "maxLength": 2048,
-                  "label": "Highlighted lead text",
-                  "importance": "low",
-                  "placeholder": "e.g. Correct! or Keep practicing",
-                  "optional": true
-                },
-                {
-                  "name": "feedbackLeadBold",
-                  "type": "boolean",
-                  "label": "Bold lead text",
-                  "importance": "low",
-                  "default": true
-                },
-                {
-                  "name": "feedbackLeadTextColor",
-                  "type": "text",
-                  "widget": "colorSelector",
-                  "label": "Highlighted lead text color",
-                  "default": "#1a73d9",
-                  "importance": "low",
-                  "optional": true,
-                  "spectrum": {
-                    "showInput": true
-                  }
-                },
-                {
-                  "name": "feedbackTextAlign",
-                  "type": "select",
-                  "label": "Text alignment",
-                  "description": "Only used when no feedback image is set. With an image, text alignment follows image position (left/right: left aligned, above: centered).",
-                  "importance": "low",
-                  "default": "left",
-                  "options": [
-                    {
-                      "value": "left",
-                      "label": "Left"
-                    },
-                    {
-                      "value": "center",
-                      "label": "Center"
-                    },
-                    {
-                      "value": "right",
-                      "label": "Right"
-                    }
-                  ]
-                },
                 {
                   "name": "feedbackImage",
                   "type": "image",

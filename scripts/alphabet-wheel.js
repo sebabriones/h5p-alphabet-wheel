@@ -1382,9 +1382,11 @@ H5P.AlphabetWheel = (function ($) {
       ratio,
       this.contentId,
       score,
-      maxScore
+      maxScore,
+      { allowHtml: true, omitLead: true }
     );
     var hasMessage = resolved && resolved.html && resolved.html.trim().length > 0;
+    var $feedbackText;
 
     this.setFeedback(
       hasMessage ? resolved.html : '',
@@ -1398,6 +1400,15 @@ H5P.AlphabetWheel = (function ($) {
         .children('.h5p-question-feedback')
         .not('.h5p-question-popup')
         .remove();
+      return;
+    }
+
+    if (resolved.feedbackBodyFontSize != null && this.$resultFeedback) {
+      $feedbackText = this.$resultFeedback.find('.h5p-question-feedback-content-text');
+      $feedbackText.css(
+        '--h5p-q-feedback-body-size',
+        Number(resolved.feedbackBodyFontSize) + 'em'
+      );
     }
   };
 
